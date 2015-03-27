@@ -57,4 +57,8 @@ public class TaskController {
     public void reset() {
         done = false;
     }
+
+    public void setTask(Task task) {
+        this.task = task;
+    }
 }

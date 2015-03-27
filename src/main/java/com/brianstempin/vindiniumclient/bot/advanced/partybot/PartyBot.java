@@ -10,7 +10,7 @@ import com.brianstempin.vindiniumclient.bot.advanced.AdvancedGameState;
 public class PartyBot implements AdvancedBot{
     @Override
     public BotMove move(AdvancedGameState gameState) {
-        return null;
+        return BotMove.STAY;
     }
 
     @Override
