@@ -7,8 +7,8 @@ package com.brianstempin.vindiniumclient.bot.advanced;
 public abstract class LeafTask extends Task{
     protected TaskController controller;
 
-    public LeafTask(AdvancedGameState state) {
-        super(state);
+    public LeafTask(AdvancedGameState state, Blackboard bb) {
+        super(state, bb);
         createController();
     }
 

@@ -6,9 +6,11 @@ package com.brianstempin.vindiniumclient.bot.advanced;
  */
 public abstract class Task {
     protected AdvancedGameState state;
+    protected Blackboard bb;
 
-    public Task(AdvancedGameState state) {
+    public Task(AdvancedGameState state, Blackboard bb) {
         this.state = state;
+        this.bb = bb;
     }
 
     public abstract boolean canBeUpdated();

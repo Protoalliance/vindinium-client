@@ -7,8 +7,8 @@ package com.brianstempin.vindiniumclient.bot.advanced;
 public abstract class TaskDecorator extends Task{
     private Task task;
 
-    public TaskDecorator(AdvancedGameState state, Task task) {
-        super(state);
+    public TaskDecorator(AdvancedGameState state, Blackboard bb, Task task) {
+        super(state, bb);
         initTask(task);
     }
 
