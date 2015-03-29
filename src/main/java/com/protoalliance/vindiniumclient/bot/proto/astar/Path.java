@@ -1,4 +1,6 @@
-package com.protoalliance.vindiniumclient.bot.proto;
+package com.protoalliance.vindiniumclient.bot.proto.astar;
+
+import com.protoalliance.vindiniumclient.bot.proto.Vertex;
 
 import java.util.LinkedList;
 
