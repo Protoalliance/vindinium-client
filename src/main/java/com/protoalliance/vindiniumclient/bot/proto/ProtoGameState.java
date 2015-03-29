@@ -1,4 +1,4 @@
-package com.protoalliance.vindiniumclient.bot.advanced;
+package com.protoalliance.vindiniumclient.bot.proto;
 
 import com.protoalliance.vindiniumclient.dto.GameState;
 
@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-public class AdvancedGameState {
+public class ProtoGameState {
     private final Map<GameState.Position, Mine> mines;
     private final Map<GameState.Position, Pub> pubs;
     private final Map<GameState.Position, GameState.Hero> heroesByPosition;
@@ -18,7 +18,7 @@ public class AdvancedGameState {
      * Creates an ProtoGameState from a GameState
      * @param gameState
      */
-    public AdvancedGameState(GameState gameState) {
+    public ProtoGameState(GameState gameState) {
         boardGraph = new HashMap<>();
         mines = new HashMap<>();
         pubs = new HashMap<>();
@@ -111,7 +111,7 @@ public class AdvancedGameState {
      * @param oldGameState
      * @param updatedState
      */
-    public AdvancedGameState(AdvancedGameState oldGameState, GameState updatedState) {
+    public ProtoGameState(ProtoGameState oldGameState, GameState updatedState) {
 
         // Copy the stuff we can just re-use
         this.boardGraph = oldGameState.getBoardGraph();
@@ -147,8 +147,8 @@ public class AdvancedGameState {
         }
     }
 
-    public AdvancedGameState(Map<GameState.Position, Mine> mines, Map<GameState.Position, Pub> pubs,
-                             Map<GameState.Position, GameState.Hero> heroesByPosition, Map<Integer,
+    public ProtoGameState(Map<GameState.Position, Mine> mines, Map<GameState.Position, Pub> pubs,
+                          Map<GameState.Position, GameState.Hero> heroesByPosition, Map<Integer,
             GameState.Hero> heroesById, Map<GameState.Position, Vertex> boardGraph, GameState.Hero me) {
         this.mines = mines;
         this.pubs = pubs;

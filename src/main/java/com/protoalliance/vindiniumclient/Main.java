@@ -2,6 +2,8 @@ package com.protoalliance.vindiniumclient;
 
 import com.protoalliance.vindiniumclient.bot.advanced.AdvancedBot;
 import com.protoalliance.vindiniumclient.bot.advanced.AdvancedBotRunner;
+import com.protoalliance.vindiniumclient.bot.proto.ProtoBot;
+import com.protoalliance.vindiniumclient.bot.proto.ProtoBotRunner;
 import com.protoalliance.vindiniumclient.bot.simple.SimpleBot;
 import com.protoalliance.vindiniumclient.bot.simple.SimpleBotRunner;
 import com.protoalliance.vindiniumclient.dto.ApiKey;
@@ -47,10 +49,23 @@ public class Main {
             case "advanced":
                 runAdvancedBot(key, gameUrl, botClass);
                 break;
+            case "proto":
+                runProtoBot(key, gameUrl, botClass);
+                break;
             default:
                 throw new RuntimeException("The bot type must be simple or advanced and must match the type of the bot.");
         }
     }
+
+    private static void runProtoBot(String key, GenericUrl gameUrl, String botClass) throws Exception {
+        Class<?> clazz = Class.forName(botClass);
+        Class<? extends ProtoBot> botClazz = clazz.asSubclass(ProtoBot.class);
+        ProtoBot bot = botClazz.newInstance();
+        ApiKey apiKey = new ApiKey(key);
+        ProtoBotRunner runner = new ProtoBotRunner(apiKey, gameUrl, bot);
+        runner.call();
+    }
+
 
     private static void runAdvancedBot(String key, GenericUrl gameUrl, String botClass) throws Exception {
         Class<?> clazz = Class.forName(botClass);

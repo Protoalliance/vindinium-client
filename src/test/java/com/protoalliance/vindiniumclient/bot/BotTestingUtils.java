@@ -36,10 +36,10 @@ public class BotTestingUtils {
     }
 
     /**
-     * Gets an AdvancedGameState by reading and parsing a file from a given resource path
+     * Gets an ProtoGameState by reading and parsing a file from a given resource path
      *
      * @param resourcePath path to a resource within the class path
-     * @return a parsed AdvancedGameState
+     * @return a parsed ProtoGameState
      */
     public static AdvancedGameState getAdvancedGameState(String resourcePath) throws FileNotFoundException {
         GameState gameState = getGameState(resourcePath);
