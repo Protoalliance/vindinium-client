@@ -1,12 +1,19 @@
 package com.brianstempin.vindiniumclient.bot.advanced.partybot;
 
 import com.brianstempin.vindiniumclient.bot.BotMove;
+import com.brianstempin.vindiniumclient.bot.advanced.AdvancedGameState;
+import com.brianstempin.vindiniumclient.bot.advanced.Blackboard;
 import com.brianstempin.vindiniumclient.bot.advanced.LeafTask;
 
 /**
  * Created by Joseph on 3/27/2015.
  */
 public class RandomMovementTask extends LeafTask{
+
+    public RandomMovementTask(AdvancedGameState state, Blackboard bb) {
+        super(state, bb);
+    }
+
     @Override
     public boolean canBeUpdated() {
         return false;
@@ -28,15 +35,20 @@ public class RandomMovementTask extends LeafTask{
 
         switch(randomNumber) {
             case 1:
-                return BotMove.NORTH;
+                bb.move = BotMove.NORTH;
+                break;
             case 2:
-                return BotMove.SOUTH;
+                bb.move = BotMove.SOUTH;
+                break;
             case 3:
-                return BotMove.EAST;
+                bb.move = BotMove.EAST;
+                break;
             case 4:
-                return BotMove.WEST;
+                bb.move = BotMove.WEST;
+                break;
             default:
-                return BotMove.STAY;
+                bb.move = BotMove.STAY;
+                break;
         }
     }
 }
