@@ -35,7 +35,7 @@ To create an uber JAR:
     
 Command for running from Maven for advanced murderbot:
 
-    exec:java -Dexec.mainClass="com.protoalliance.vindiniumclient.Main" -Dexec.args="YOURKEY TRAINING advanced com.protoalliance.vindiniumclient.bot.advanced.murderbot.AdvancedMurderBot"
+    exec:java -Dexec.mainClass=com.protoalliance.vindiniumclient.Main "-Dexec.args=YOURKEY TRAINING proto com.protoalliance.vindiniumclient.bot.proto.partybot.PartyBot"
 
 #### CLI Usage
 The CLI takes 4 arguments:
