@@ -1,7 +1,6 @@
 package com.protoalliance.vindiniumclient.bot.proto.partybot;
 
 import com.protoalliance.vindiniumclient.bot.BotMove;
-import com.protoalliance.vindiniumclient.bot.proto.ProtoGameState;
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.Blackboard;
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.LeafTask;
 import org.apache.logging.log4j.LogManager;
@@ -12,8 +11,8 @@ import org.apache.logging.log4j.Logger;
  */
 public class RandomMovementTask extends LeafTask {
     private static final Logger logger = LogManager.getLogger(RandomMovementTask.class);
-    public RandomMovementTask(ProtoGameState state, Blackboard bb) {
-        super(state, bb);
+    public RandomMovementTask(Blackboard bb) {
+        super(bb);
     }
 
     @Override

@@ -1,5 +1,5 @@
 package com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase;
-import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.Blackboard;
+
 /**
  * Created by Matthew on 3/29/2015.
  */

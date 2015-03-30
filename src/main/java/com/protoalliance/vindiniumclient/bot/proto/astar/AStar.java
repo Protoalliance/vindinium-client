@@ -1,5 +1,6 @@
 package com.protoalliance.vindiniumclient.bot.proto.astar;
 
+import com.protoalliance.vindiniumclient.bot.proto.ProtoGameState;
 import com.protoalliance.vindiniumclient.bot.proto.Vertex;
 import com.protoalliance.vindiniumclient.dto.GameState;
 
@@ -10,7 +11,7 @@ public class AStar {
     private static final boolean RECORD_NODES = true;
     private Vertex start;
     private Vertex end;
-    private Graph aGraph;
+    private ProtoGameState gameState;
     private NodeRecord startRecord;
     ArrayList<NodeRecord> openList;
     ArrayList<NodeRecord> closedList;
@@ -21,17 +22,16 @@ public class AStar {
     long after;
 
 
-    public AStar(Graph aGraph, Vertex start, Vertex end){
-        this.aGraph = aGraph;
+    public AStar(ProtoGameState gameState, Vertex start, Vertex end){
+        this.gameState = gameState;
         this.hFunc = new Manhattan(end);
         this.numNodesVisited = 0;
-        int numNodes = aGraph.getNumNodes();
         this.start = start;
         this.end = end;
         this.startRecord = new NodeRecord(start, null, 0, hFunc.estimate(start));
-        openList = new ArrayList<NodeRecord>(numNodes);
+        openList = new ArrayList<NodeRecord>();
         openList.add(startRecord);
-        closedList = new ArrayList<NodeRecord>(numNodes);
+        closedList = new ArrayList<NodeRecord>();
         recordingStack = new Stack<NodeRecord>();
     }
 

@@ -12,7 +12,7 @@ public class PartyBot implements ProtoBot {
     @Override
     public BotMove move(ProtoGameState gameState) {
         Blackboard bb = new Blackboard();
-        RandomMovementTask randomMovementTask = new RandomMovementTask(gameState, bb);
+        RandomMovementTask randomMovementTask = new RandomMovementTask(bb);
         //TODO: Add controller as wrapper for task
 
         //Perform any initialization
