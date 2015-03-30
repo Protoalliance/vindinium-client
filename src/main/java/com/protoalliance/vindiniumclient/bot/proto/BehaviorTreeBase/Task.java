@@ -5,23 +5,44 @@ package com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase;
  * Adapted from http://magicscrollsofcode.blogspot.com/2010/12/behavior-trees-by-example-ai-in-android.html
  */
 public abstract class Task {
-    protected Blackboard bb;
+    public Blackboard bb;
 
+    /**
+     * Creates a new instance of the Task class
+     * @param bb Reference to the
+     * AI Blackboard data
+     */
     public Task(Blackboard bb) {
         this.bb = bb;
     }
 
-    public boolean checkConditions() {
-        return true;
-    }
+    /**
+     * Override to do a pre-conditions check to
+     * see if the task can be updated.
+     * @return True if it can, false if it can't
+     */
+    public abstract boolean checkConditions();
 
-    public abstract boolean canBeUpdated();
-
+    /**
+     * Override to add startup logic to the task
+     */
     public abstract void start();
 
+    /**
+     * Override to add ending logic to the task
+     */
     public abstract void end();
 
+    /**
+     * Override to specify the logic the task
+     * must update each cycle
+     */
     public abstract void perform();
 
+    /**
+     * Override to specify the controller the
+     * task has
+     * @return The specific task controller.
+     */
     public abstract TaskController getController();
 }

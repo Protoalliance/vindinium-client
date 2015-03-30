@@ -5,14 +5,17 @@ import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.Blackboard;
 /**
  * Created by Matthew on 3/29/2015.
  */
-public class ReachDestinationTask extends LeafTask {
-    public ReachDestinationTask( Blackboard bb) {
+public class PathfindToClosestBotTask extends LeafTask {
+    public PathfindToClosestBotTask(Blackboard bb) {
         super(bb);
     }
 
     @Override
-    public boolean canBeUpdated() {
-        return false;
+    public boolean checkConditions() {
+        if(bb.getPath() == null || bb.getGameState() == null || bb.getTarget() == null){
+            return false;
+        }
+        return true;
     }
 
     @Override

@@ -16,9 +16,10 @@ public class RandomMovementTask extends LeafTask {
     }
 
     @Override
-    public boolean canBeUpdated() {
+    public boolean checkConditions() {
         return false;
     }
+
 
     @Override
     public void start() {

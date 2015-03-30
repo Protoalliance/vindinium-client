@@ -45,8 +45,8 @@ public abstract class ParentTask extends Task {
         return control;
     }
     /**
-     * Checks for the appropiate pre-state
-     * of the data
+     * Basically we're checking to make sure that
+     * we actually have some leaf tasks to execute.
      */
 
     public boolean checkConditions() {
@@ -74,7 +74,7 @@ public abstract class ParentTask extends Task {
      * a member of our ParentTaskController
      */
 
-    public void doAction() {
+    public void perform() {
         logger.info("Doing Action");
         if(control.finished()) {
         // If this parent task is finished

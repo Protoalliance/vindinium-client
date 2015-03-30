@@ -37,8 +37,7 @@ public class AStar {
 
 
 
-    public Connection[] getPath(){
-        before = calculateMemoryUsageBefore();
+    public Path getPath(){
         NodeRecord cur = null;
         List<Vertex> vertConnections = null;
         int endNodeHeuristic = 0;
@@ -106,7 +105,6 @@ public class AStar {
             openList.remove(cur);
             closedList.add(cur);
         }
-        after = calculateMemoryUsageAfter();
 
         if(cur.getNode() != end){
             return null;
@@ -127,12 +125,34 @@ public class AStar {
                     cur = val2;
                 }
             }
-            Connection[] retPath = new Connection[path.size()];
-            int i = 0;
-            while(!path.empty()){
-                retPath[i++] = path.pop();
+
+            Path retPath = new Path();
+            //Check to make sure that that path isn't empty for some weird reason
+            if(path.empty()){
+                //If we're here we're either right where we should be
+                //or something really bad happened.
+                return null;
             }
+            Connection conn = path.pop();
+            //First add the source node of the first connection
+            retPath.add(conn.getSourceNode());
+            //Second add the sink node of the first connection.
+            retPath.add(conn.getSinkNode());
+
+            while(!path.empty()){
+                //In here we'll continuously add in the sink nodes
+                //until we've added them all.
+                retPath.add(path.pop().getSinkNode());
+            }
+
             return retPath;
+
+            //Connection[] retPath = new Connection[path.size()];
+            //int i = 0;
+            //while(!path.empty()){
+                //retPath[i++] = path.pop();
+            //}
+            //return retPath;
         }
 
     }
@@ -148,36 +168,8 @@ public class AStar {
         return null;
     }
 
-    public long getNumNodesVisited(){
-        return numNodesVisited;
-    }
-
-    public long calculateMemoryUsageBefore(){
-        Runtime runtime = Runtime.getRuntime();
-        // Run the garbage collector
-        runtime.gc();
-        // Calculate the used memory
-        //long memory = runtime.totalMemory() - runtime.freeMemory();
-        long m2 = Runtime.getRuntime().freeMemory();
-        return m2;
-    }
-
-    public long calculateMemoryUsageAfter(){
-        Runtime runtime = Runtime.getRuntime();
-        // Run the garbage collector
-        //runtime.gc();
-        // Calculate the used memory
-        //long memory = runtime.totalMemory() - runtime.freeMemory();
-        long m2 = Runtime.getRuntime().freeMemory();
-        return m2;
-    }
-
     public void setEndNode(Vertex node){
         end = node;
-    }
-
-    public long getMemoryUsage(){
-        return before - after;
     }
 
     public Stack<NodeRecord> getRecordStack(){

@@ -16,6 +16,10 @@ public class Manhattan implements Heuristic {
         this.goalVertex = goal;
     }
 
+    public void setGoalVertex(Vertex goal){
+        this.goalVertex = goal;
+    }
+
     public int estimate(Vertex start){
         int xdist = Math.abs(goalVertex.getPosition().getX() - start.getPosition().getX());
         int ydist = Math.abs(goalVertex.getPosition().getY() - start.getPosition().getY());

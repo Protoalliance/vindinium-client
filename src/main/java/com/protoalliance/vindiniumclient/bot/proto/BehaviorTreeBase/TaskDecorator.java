@@ -17,7 +17,7 @@ public abstract class TaskDecorator extends Task {
     }
 
     public boolean canBeUpdated() {
-        return task.canBeUpdated();
+        return task.checkConditions();
     }
 
     public void start() {

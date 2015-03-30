@@ -16,8 +16,11 @@ public class RandomMovementTask extends LeafTask {
     }
 
     @Override
-    public boolean canBeUpdated() {
-        return false;
+    public boolean checkConditions() {
+        if(bb.getPath() == null || bb.getGameState() == null || bb.getTarget() == null){
+            return false;
+        }
+        return true;
     }
 
     @Override

@@ -18,6 +18,10 @@ public class Path {
         vertices.addFirst(v);
     }
 
+    public void add(Vertex v){
+        vertices.add(v);
+    }
+
     public LinkedList<Vertex> getVertices() {
         return vertices;
     }

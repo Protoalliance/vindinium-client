@@ -14,6 +14,11 @@ public class RunEndlessDecorator extends TaskDecorator{
     }
 
     @Override
+    public boolean checkConditions() {
+        return false;
+    }
+
+    @Override
     public void perform() {
         while(true){
 
