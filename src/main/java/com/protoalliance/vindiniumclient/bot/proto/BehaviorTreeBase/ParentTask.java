@@ -40,7 +40,8 @@ public abstract class ParentTask extends Task {
      * Gets the control reference
      */
 
-    public TaskController getControl() {
+    @Override
+    public ParentTaskController getController() {
         return control;
     }
     /**
@@ -118,7 +119,7 @@ public abstract class ParentTask extends Task {
      * current task to the first one
      * of the available child tasks.
      */
-    public void Start() {
+    public void start() {
         logger.info("Starting");
         control.currentTask = control.subTasks.get(0);
         if(control.currentTask == null) {

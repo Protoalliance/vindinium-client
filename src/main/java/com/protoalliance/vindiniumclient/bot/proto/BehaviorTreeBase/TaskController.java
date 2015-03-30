@@ -28,12 +28,12 @@ public class TaskController {
         task.end();
     }
 
-    protected void finishWithSuccess() {
+    public void finishWithSuccess() {
         success = true;
         done = true;
     }
 
-    protected void finishWithFailure() {
+    public void finishWithFailure() {
         success = false;
         done = true;
     }

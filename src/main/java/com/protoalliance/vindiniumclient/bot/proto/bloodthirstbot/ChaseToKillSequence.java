@@ -2,6 +2,7 @@ package com.protoalliance.vindiniumclient.bot.proto.bloodthirstbot;
 
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.Blackboard;
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.ParentTask;
+import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.ParentTaskController;
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.TaskController;
 
 /**
@@ -15,12 +16,19 @@ public class ChaseToKillSequence extends ParentTask {
 
     @Override
     public void childSucceeded() {
-
+        int curPos = control.subTasks.indexOf(control.currentTask);
+        if(curPos == control.subTasks.size() - 1){
+            control.finishWithSuccess();
+        }else{
+            control.currentTask = control.subTasks.get(++curPos);
+            if(!control.currentTask.checkConditions())
+                control.finishWithFailure();
+        }
     }
 
     @Override
     public void childFailed() {
-
+        control.finishWithFailure();
     }
 
     @Override
@@ -44,7 +52,7 @@ public class ChaseToKillSequence extends ParentTask {
     }
 
     @Override
-    public TaskController getController() {
-        return null;
+    public ParentTaskController getController() {
+        return control;
     }
 }

@@ -11,6 +11,10 @@ public abstract class Task {
         this.bb = bb;
     }
 
+    public boolean checkConditions() {
+        return true;
+    }
+
     public abstract boolean canBeUpdated();
 
     public abstract void start();

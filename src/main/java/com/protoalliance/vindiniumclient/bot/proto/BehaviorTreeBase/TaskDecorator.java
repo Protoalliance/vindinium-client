@@ -1,7 +1,4 @@
 package com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase;
-
-import com.protoalliance.vindiniumclient.bot.proto.ProtoGameState;
-
 /**
  * Created by Joseph on 3/26/2015.
  * Adapted from http://magicscrollsofcode.blogspot.com/2010/12/behavior-trees-by-example-ai-in-android.html
@@ -9,7 +6,7 @@ import com.protoalliance.vindiniumclient.bot.proto.ProtoGameState;
 public abstract class TaskDecorator extends Task {
     private Task task;
 
-    public TaskDecorator(ProtoGameState state, Blackboard bb, Task task) {
+    public TaskDecorator(Blackboard bb, Task task) {
         super(bb);
         initTask(task);
     }
