@@ -103,6 +103,7 @@ public abstract class ParentTask extends Task {
                 this.childFailed();
             }
         //Task is ready, so update
+        //THIS IS WHERE THE DOING GETS DONE!
         } else {
             control.currentTask.perform();
         }

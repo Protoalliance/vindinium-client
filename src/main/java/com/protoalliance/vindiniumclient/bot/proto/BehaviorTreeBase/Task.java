@@ -30,6 +30,8 @@ public abstract class Task {
 
     /**
      * Override to add ending logic to the task
+     * Currently end is called every time that a
+     * task finishes.
      */
     public abstract void end();
 

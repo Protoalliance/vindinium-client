@@ -34,6 +34,9 @@ public class Blackboard {
         return state;
     }
 
+    public void setPath(Path p ){
+        this.path = p;
+    }
     public Path getPath(){
         return path;
     }

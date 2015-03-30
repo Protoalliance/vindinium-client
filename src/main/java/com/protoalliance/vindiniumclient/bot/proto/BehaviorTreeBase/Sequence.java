@@ -1,4 +1,4 @@
-package com.protoalliance.vindiniumclient.bot.proto.bloodthirstbot;
+package com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase;
 
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.Blackboard;
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.ParentTask;
