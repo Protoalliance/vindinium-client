@@ -1,14 +1,13 @@
-package com.protoalliance.vindiniumclient.bot.proto.partybot;
-
+package com.protoalliance.vindiniumclient.bot.proto.bloodthirstbot;
 import com.protoalliance.vindiniumclient.bot.BotMove;
 import com.protoalliance.vindiniumclient.bot.proto.ProtoBot;
 import com.protoalliance.vindiniumclient.bot.proto.ProtoGameState;
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.Blackboard;
 
 /**
- * Created by Joseph on 3/23/2015.
+ * Created by Matthew on 3/29/2015.
  */
-public class PartyBot implements ProtoBot {
+public class BloodthirstBot implements ProtoBot{
     @Override
     public BotMove move(ProtoGameState gameState) {
         Blackboard bb = new Blackboard();

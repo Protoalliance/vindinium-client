@@ -1,4 +1,4 @@
-package com.protoalliance.vindiniumclient.bot.proto;
+package com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase;
 
 import java.util.ArrayList;
 
@@ -12,8 +12,8 @@ public class ParentTaskController extends TaskController{
 
     public ParentTaskController(Task task) {
         super(task);
-
         subTasks = new ArrayList<>();
+        currentTask = null;
     }
 
     public void addTask(Task task) {
@@ -22,10 +22,6 @@ public class ParentTaskController extends TaskController{
 
     public void reset() {
         super.reset();
-
         currentTask = subTasks.get(0);
     }
-
-
-
 }

@@ -1,4 +1,4 @@
-package com.protoalliance.vindiniumclient.bot.proto;
+package com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase;
 
 /**
  * Created by Joseph on 3/24/2015.
@@ -7,8 +7,8 @@ package com.protoalliance.vindiniumclient.bot.proto;
 public abstract class LeafTask extends Task {
     protected TaskController controller;
 
-    public LeafTask(ProtoGameState state, Blackboard bb) {
-        super(state, bb);
+    public LeafTask(Blackboard bb) {
+        super(bb);
         createController();
     }
 

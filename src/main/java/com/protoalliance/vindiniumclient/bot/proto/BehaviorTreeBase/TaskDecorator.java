@@ -1,4 +1,6 @@
-package com.protoalliance.vindiniumclient.bot.proto;
+package com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase;
+
+import com.protoalliance.vindiniumclient.bot.proto.ProtoGameState;
 
 /**
  * Created by Joseph on 3/26/2015.
@@ -8,7 +10,7 @@ public abstract class TaskDecorator extends Task {
     private Task task;
 
     public TaskDecorator(ProtoGameState state, Blackboard bb, Task task) {
-        super(state, bb);
+        super(bb);
         initTask(task);
     }
 

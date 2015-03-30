@@ -1,4 +1,4 @@
-package com.protoalliance.vindiniumclient.bot.proto;
+package com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase;
 
 /**
  * Created by Joseph on 3/24/2015.

@@ -13,6 +13,10 @@ public abstract class Task {
         this.bb = bb;
     }
 
+    public Task(Blackboard bb) {
+
+    }
+
     public abstract boolean canBeUpdated();
 
     public abstract void start();
