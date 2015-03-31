@@ -1,17 +1,16 @@
-package com.protoalliance.vindiniumclient.bot.proto.bloodthirstbot;
+package com.protoalliance.vindiniumclient.bot.proto.minebot;
 
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.Blackboard;
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.ParentTask;
 
 /**
- * Created by Matthew on 3/29/2015.
+ * Created by Joseph on 3/30/2015.
  */
-public class ChaseToKillSequence extends ParentTask {
-
-    public ChaseToKillSequence(Blackboard bb) {
+public class ChaseToMineSequence extends ParentTask{
+    public ChaseToMineSequence(Blackboard bb) {
         super(bb);
-        control.subTasks.add(new GetClosestBotTask(bb));
-        control.subTasks.add(new PathfindToClosestBotTask(bb));
+        control.subTasks.add(new GetClosestMineTask(bb));
+        control.subTasks.add(new PathfindToClosestMineTask(bb));
         control.subTasks.add(new MoveToTargetTask(bb));
 
     }

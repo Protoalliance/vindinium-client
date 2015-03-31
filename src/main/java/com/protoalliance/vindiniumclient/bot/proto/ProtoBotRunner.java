@@ -74,6 +74,7 @@ public class ProtoBotRunner implements Callable<GameState> {
 
         } catch (Exception e) {
             logger.error("Error during game play", e);
+            e.printStackTrace();
         }
 
         logger.info("Game over");

@@ -1,9 +1,5 @@
-package com.protoalliance.vindiniumclient.bot.proto.bloodthirstbot;
+package com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase;
 
-import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.Blackboard;
-import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.ParentTaskDecorator;
-import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.Task;
-import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.TaskDecorator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
