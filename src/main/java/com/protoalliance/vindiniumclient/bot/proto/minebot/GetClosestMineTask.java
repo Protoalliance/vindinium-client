@@ -21,7 +21,6 @@ public class GetClosestMineTask extends LeafTask{
     private Vertex target;
     public GetClosestMineTask(Blackboard bb) {
         super(bb);
-        this.state = bb.getGameState();
     }
 
     @Override
@@ -56,6 +55,7 @@ public class GetClosestMineTask extends LeafTask{
      */
     @Override
     public void perform() {
+        state = bb.getGameState();
         Vertex target = null;
         int minDist = Integer.MAX_VALUE;
         Vertex cur = null;
