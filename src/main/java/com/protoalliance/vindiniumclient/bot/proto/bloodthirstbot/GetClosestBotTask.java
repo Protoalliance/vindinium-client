@@ -36,6 +36,7 @@ public class GetClosestBotTask extends LeafTask {
     @Override
     public void start() {
         logger.info("Getting target.");
+
     }
 
     @Override
@@ -57,6 +58,7 @@ public class GetClosestBotTask extends LeafTask {
      */
     @Override
     public void perform() {
+        this.state = bb.getGameState();
         Vertex target = null;
         int minDist = Integer.MAX_VALUE;
         Vertex cur = null;
@@ -65,6 +67,10 @@ public class GetClosestBotTask extends LeafTask {
         Manhattan man = new Manhattan(null);
         Map<GameState.Position, GameState.Hero> heroPos = state.getHeroesByPosition();
         for(GameState.Position pos : heroPos.keySet()){
+            if(pos.getX() == myPos.getX() && pos.getY() == myPos.getY()){
+                continue;
+            }
+
             cur = new Vertex(pos, null);
             man.setGoalVertex(cur);
             int est = man.estimate(myVert);

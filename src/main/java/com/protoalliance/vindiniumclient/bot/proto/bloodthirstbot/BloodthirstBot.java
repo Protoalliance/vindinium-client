@@ -14,8 +14,8 @@ public class BloodthirstBot implements ProtoBot{
     private ChaseToKillSequence seq;
     private static final Logger logger = LogManager.getLogger(BloodthirstBot.class);
 
-    public BloodthirstBot(ProtoGameState state){
-        this.bb = new Blackboard();
+    public BloodthirstBot(){
+        bb = new Blackboard();
         seq = new ChaseToKillSequence(bb);
     }
 
@@ -23,9 +23,10 @@ public class BloodthirstBot implements ProtoBot{
     public BotMove move(ProtoGameState state) {
 
         if (seq.getController().finished() || !seq.getController().started()) {
+            bb.setGameState(state);
             seq = new ChaseToKillSequence(bb);
             seq.getController().safeStart();
-            bb.setGameState(state);
+
         } else {
             //if we're here we haven't just started at the beginning
             //and we haven't just started a new run of the entire tree

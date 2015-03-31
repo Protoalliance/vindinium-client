@@ -5,7 +5,6 @@ import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.Blackboard;
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.ParentTaskController;
 import com.protoalliance.vindiniumclient.bot.proto.ProtoBot;
 import com.protoalliance.vindiniumclient.bot.proto.ProtoGameState;
-import com.protoalliance.vindiniumclient.bot.proto.bloodthirstbot.RandomMovementTask;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

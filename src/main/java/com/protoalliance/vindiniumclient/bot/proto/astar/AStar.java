@@ -8,7 +8,7 @@ import java.util.*;
 
 public class AStar {
     private static final int NO_HEURISTIC = -1;
-    private static final boolean RECORD_NODES = true;
+
     private Vertex start;
     private Vertex end;
     private ProtoGameState gameState;
@@ -32,7 +32,6 @@ public class AStar {
         openList = new ArrayList<NodeRecord>();
         openList.add(startRecord);
         closedList = new ArrayList<NodeRecord>();
-        recordingStack = new Stack<NodeRecord>();
     }
 
 
@@ -45,14 +44,14 @@ public class AStar {
         NodeRecord closedRes = null;
         NodeRecord openRes = null;
         Vertex curConnectedVertex = null;
-        while(openList.size() > 0){
+        while(openList.size() > 0) {
             cur = getSmallestElement();
-            if(RECORD_NODES)
-                recordingStack.push(cur);
             numNodesVisited++;
             //If smallest element is the goal stop
-            if(cur.getNode() == end)
+            if (cur.getNode().getPosition().getY() == end.getPosition().getY() &&
+                    cur.getNode().getPosition().getX() == end.getPosition().getX()){
                 break;
+            }
             vertConnections = cur.getNode().getAdjacentVertices();
             if(vertConnections == null){
                 return null;
@@ -106,7 +105,8 @@ public class AStar {
             closedList.add(cur);
         }
 
-        if(cur.getNode() != end){
+        if(cur.getNode().getPosition().getY() != end.getPosition().getY() &&
+                cur.getNode().getPosition().getX() != end.getPosition().getX()){
             return null;
         }else{
             //build path back through nodes.
@@ -170,10 +170,6 @@ public class AStar {
 
     public void setEndNode(Vertex node){
         end = node;
-    }
-
-    public Stack<NodeRecord> getRecordStack(){
-        return recordingStack;
     }
 
     public NodeRecord getSmallestElement(){
