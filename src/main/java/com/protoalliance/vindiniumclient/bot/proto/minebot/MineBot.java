@@ -14,36 +14,41 @@ import org.apache.logging.log4j.Logger;
 public class MineBot implements ProtoBot{
     private static final Logger logger = LogManager.getLogger(MineBot.class);
 
+    private Blackboard bb;
     private ChaseToMineSequence mineSequence;
-    private ParentTaskController mineSequenceController;
 
     public MineBot() {
-        mineSequence = null;
-        mineSequenceController = null;
+        bb = new Blackboard();
+        mineSequence = new ChaseToMineSequence(bb);
         logger.info("Initializing MineBot");
     }
 
     @Override
     public BotMove move(ProtoGameState gameState) {
-        Blackboard bb = new Blackboard();
-        bb.setGameState(gameState);
-
-        if (mineSequence == null || mineSequenceController.finished()) {
+        if (mineSequence.getController().finished() || !mineSequence.getController().started()) {
+            bb.setGameState(gameState);
             mineSequence = new ChaseToMineSequence(bb);
-            mineSequenceController = mineSequence.getController();
-            mineSequenceController.safeStart();
+            mineSequence.getController().safeStart();
             logger.info("Task is finished or first run in MineBot");
+        } else {
+            {
+                //if we're here we haven't just started at the beginning
+                //and we haven't just started a new run of the entire tree
+                //so just reset the blackboard to the current state
+                bb.setGameState(gameState);
+            }
         }
 
 
-        while (bb.move == null) {
+        while (bb.move == null && !mineSequence.getController().finished()) {
             mineSequence.perform();
             logger.info("Performing MineBot");
         }
 
-        if (mineSequenceController.finished()) {
-            mineSequenceController.safeEnd();
-            logger.info("MineBot finished");
+        if(mineSequence.getController().finished() && bb.move == null) {
+            logger.info("We finished the entire tree and returned null!");
+        }else{
+            logger.info("We retunred a move of " + bb.move);
         }
 
         return bb.move;
