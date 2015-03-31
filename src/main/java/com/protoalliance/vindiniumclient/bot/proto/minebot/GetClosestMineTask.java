@@ -21,6 +21,7 @@ public class GetClosestMineTask extends LeafTask{
     private Vertex target;
     public GetClosestMineTask(Blackboard bb) {
         super(bb);
+        this.state = bb.getGameState();
     }
 
     @Override
@@ -61,7 +62,7 @@ public class GetClosestMineTask extends LeafTask{
         if (state == null) {
             logger.error("State is null");
         }
-        GameState.Position myPos = state.getMe().getPos();
+        GameState.Position myPos =state.getMe().getPos();
         Vertex myVert = new Vertex(myPos, null);
         Manhattan man = new Manhattan(null);
         Map<GameState.Position, Mine> minePos = state.getMines();

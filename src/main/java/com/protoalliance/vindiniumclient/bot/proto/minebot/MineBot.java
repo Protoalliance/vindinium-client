@@ -28,7 +28,6 @@ public class MineBot implements ProtoBot{
         Blackboard bb = new Blackboard();
         bb.setGameState(gameState);
 
-
         if (mineSequence == null || mineSequenceController.finished()) {
             mineSequence = new ChaseToMineSequence(bb);
             mineSequenceController = mineSequence.getController();
