@@ -52,8 +52,8 @@ public class ProtoBotRunner implements Callable<GameState> {
             request.setReadTimeout(0); // Wait forever to be assigned to a game
             response = request.execute();
             gameState = response.parseAs(GameState.class);
-            logger.info("Game URL: {}", gameState.getViewUrl());
-            System.out.println("Game URL: {}" + gameState.getViewUrl());
+            logger.info("Game URL: {", gameState.getViewUrl() + "}");
+            System.out.println("Game URL: {" + gameState.getViewUrl() + "}");
             protoGameState = new ProtoGameState(gameState);
 
             // Game loop

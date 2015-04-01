@@ -20,7 +20,7 @@ public class MineBot implements ProtoBot{
     public MineBot() {
         bb = new Blackboard();
         mineSequence = new ChaseToMineSequence(bb);
-        logger.info("Initializing MineBot");
+        System.out.println("Initializing MineBot");
     }
 
     @Override
@@ -29,6 +29,7 @@ public class MineBot implements ProtoBot{
             bb.setGameState(gameState);
             mineSequence = new ChaseToMineSequence(bb);
             mineSequence.getController().safeStart();
+            bb.move = null;
             logger.info("Task is finished or first run in MineBot");
         } else {
             {
@@ -36,21 +37,31 @@ public class MineBot implements ProtoBot{
                 //and we haven't just started a new run of the entire tree
                 //so just reset the blackboard to the current state
                 bb.setGameState(gameState);
+                bb.move = null;
             }
         }
 
 
-        while (bb.move == null && !mineSequence.getController().finished()) {
-            mineSequence.perform();
-            logger.info("Performing MineBot");
+        //The idea here is that we keep calling until bb.move is a real
+        //move or we just finish for some reason without that happening.
+        while(bb.move == null) {
+            while (bb.move == null && !mineSequence.getController().finished()) {
+                mineSequence.perform();
+            }
+            if (mineSequence.getController().finished() && bb.move == null) {
+                if (mineSequence.getController().succeeded()) {
+                    //If we're here the tree completed, so we need
+                    //Since the tree completed, either we
+                    //actually finished the path or the target bot
+                    //moved.
+                    mineSequence = new ChaseToMineSequence(bb);
+                    mineSequence.getController().safeStart();
+                    bb.move = null;
+                }
+            }
         }
 
-        if(mineSequence.getController().finished() && bb.move == null) {
-            logger.info("We finished the entire tree and returned null!");
-        }else{
-            logger.info("We retunred a move of " + bb.move);
-        }
-
+        System.out.println("Returning a move of " + bb.move);
         return bb.move;
     }
 

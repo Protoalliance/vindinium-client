@@ -220,6 +220,22 @@ public class GameState {
         public boolean isCrashed() {
             return crashed;
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            Hero hero = (Hero) o;
+
+            return id == hero.id;
+
+        }
+
+        @Override
+        public int hashCode() {
+            return id;
+        }
     }
 
     @Immutable

@@ -67,11 +67,13 @@ public class GetClosestMineTask extends LeafTask{
         Manhattan man = new Manhattan(null);
         Map<GameState.Position, Mine> minePos = state.getMines();
         for(GameState.Position pos : minePos.keySet()){
-            cur = new Vertex(pos, null);
-            man.setGoalVertex(cur);
-            int est = man.estimate(myVert);
-            if(est < minDist){
-                target = cur;
+            if (minePos.get(pos).getOwner() != state.getMe()) {
+                cur = new Vertex(pos, null);
+                man.setGoalVertex(cur);
+                int est = man.estimate(myVert);
+                if (est < minDist) {
+                    target = cur;
+                }
             }
         }
         bb.setTarget(target);
