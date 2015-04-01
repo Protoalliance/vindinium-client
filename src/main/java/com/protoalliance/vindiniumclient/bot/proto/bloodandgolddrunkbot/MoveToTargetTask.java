@@ -1,4 +1,4 @@
-package com.protoalliance.vindiniumclient.bot.proto.minebot;
+package com.protoalliance.vindiniumclient.bot.proto.bloodandgolddrunkbot;
 
 import com.protoalliance.vindiniumclient.bot.BotMove;
 import com.protoalliance.vindiniumclient.bot.BotUtils;
@@ -6,16 +6,13 @@ import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.Blackboard;
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.LeafTask;
 import com.protoalliance.vindiniumclient.bot.proto.Vertex;
 import com.protoalliance.vindiniumclient.bot.proto.astar.Path;
-import com.protoalliance.vindiniumclient.dto.GameState;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Map;
-
 /**
- * Created by Joseph on 3/30/2015.
+ * Created by Matthew on 3/29/2015.
  */
-public class MoveToTargetTask extends LeafTask{
+public class MoveToTargetTask extends LeafTask {
     private BotMove retMove;
     private Path path;
     private int curPathIdx;
@@ -37,7 +34,7 @@ public class MoveToTargetTask extends LeafTask{
     public void start() {
         logger.info("Setting next move.");
         this.path = bb.getPath();
-        curPathIdx = 0;
+        curPathIdx = 1;
     }
 
     @Override
@@ -60,30 +57,43 @@ public class MoveToTargetTask extends LeafTask{
      */
     @Override
     public void perform() {
-        //A short block to check whether the target has moved.  He likely has and we'll fail,
-        //if not though we'll keep going after him.
-        Vertex target = bb.getTarget();
-        boolean flag = false;
-        Map<GameState.Position, GameState.Hero> heroPos = bb.getGameState().getHeroesByPosition();
-        for(GameState.Position pos : heroPos.keySet()){
-            Vertex cur = new Vertex(pos, null);
-            //Done because I don't want to override equals, call me lazy its ok.
-            if(cur.getPosition().getY() == target.getPosition().getY() && cur.getPosition().getX() == target.getPosition().getX()){
-                //If we're in here then the target hasn't moved
-                flag = true;
-            }
-        }
-        //If the flag is false then there is no hero at our target position
-        //therefore we fail and go out to look for another path.
-        if(!flag){
+
+        if(curPathIdx > path.getVertices().size() - 1){
             control.finishWithFailure();
             return;
         }
+        //A short block to check whether the target has moved.
+        //We actually don't need to check this since the pub is never
+        //going to move.  The better idea is to actually check that
+        //we're still where we expected to be.  We could have been
+        //killed between last turn and this turn, so it may be
+        //necessary to start pathfinding all over again.  If it's
+        //the first move on the path though it's not a problem.
+        Vertex target = bb.getTarget();
+        boolean flag = false;
+        if(curPathIdx == 0){
+            //Do nothing
+            //we haven't started
+            //the path yet!
+        }else{
+            Vertex whereWeShouldBe = bb.getPath().getVertices().get(curPathIdx - 1);
+            if(whereWeShouldBe.getPosition().getY() == bb.getGameState().getMe().getPos().getY() && whereWeShouldBe.getPosition().getY() == bb.getGameState().getMe().getPos().getY()){
+                //Do nothing since we're where we should be
+            }else{
+                //We finish with failure since we
+                //aren't on our original path for
+                //some reason.
+                control.finishWithFailure();
+                return;
+            }
+        }
+
         //If we're here we need to figure out where to move based on
         //current position and the next path vertex.
         retMove = BotUtils.directionTowards(bb.getGameState().getMe().getPos(), path.getVertices().get(curPathIdx).getPosition());
         //Hopefully this works and we target the correct direction, if not we're screwed.
         logger.info("Move direction " + retMove + " target vertex (" + target.getPosition().getX() + "," + target.getPosition().getY() + ")");
+        bb.move = retMove;
         curPathIdx++;
         control.finishWithSuccess();
         return;
