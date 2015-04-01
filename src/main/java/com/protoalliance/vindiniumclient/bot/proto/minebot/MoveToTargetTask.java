@@ -48,7 +48,7 @@ public class MoveToTargetTask extends LeafTask{
     /**
      * Basic function here is that we check to see if the hero,
      * or a hero is on the target position.  This method and the
-     * GetClosestBotTask don't take into account the actual identity
+     * GetClosestPubTask don't take into account the actual identity
      * of the bot.  If no hero is on the target, then we bail out from
      * the task since we need to go back and pathfind again.  Otherwise
      * we move to the next position on the path and increment the
