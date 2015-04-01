@@ -45,16 +45,13 @@ public class BloodAndGoldThirstBot implements ProtoBot{
             while (bb.move == null && !seq.getController().finished()) {
                 seq.perform();
             }
-            if (seq.getController().finished() && bb.move == null) {
-                if (seq.getController().succeeded()) {
-                    //If we're here the tree completed, so we need
-                    //Since the tree completed, either we
-                    //actually finished the path or the target bot
-                    //moved.
-                    seq = new ChaseToKillForGoldSequence(bb);
-                    seq.getController().safeStart();
-                    bb.move = null;
-                }
+            if(seq.getController().succeeded()){
+                seq = new ChaseToKillForGoldSequence(bb);
+                seq.getController().safeStart();
+            }
+            if(seq.getController().failed()){
+                logger.info("The sequence failed!  This shouldn't happen!");
+                break;
             }
         }
 

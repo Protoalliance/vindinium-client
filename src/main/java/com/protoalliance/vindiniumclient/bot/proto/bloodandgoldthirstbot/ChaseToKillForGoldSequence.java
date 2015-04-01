@@ -3,6 +3,7 @@ package com.protoalliance.vindiniumclient.bot.proto.bloodandgoldthirstbot;
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.Blackboard;
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.ParentTask;
 
+
 /**
  * Created by Matthew on 3/29/2015.
  */
@@ -12,7 +13,7 @@ public class ChaseToKillForGoldSequence extends ParentTask {
         super(bb);
         control.subTasks.add(new GetBotWithMostMinesTask(bb));
         control.subTasks.add(new PathfindToTargetHeroTask(bb));
-        control.subTasks.add(new MoveToTargetHeroTask(bb));
+        control.subTasks.add(new RunUntilFailureDecorator(bb, new MoveToTargetHeroTask(bb)));
 
     }
 

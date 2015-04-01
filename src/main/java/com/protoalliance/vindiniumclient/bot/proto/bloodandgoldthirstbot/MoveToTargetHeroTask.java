@@ -27,7 +27,7 @@ public class MoveToTargetHeroTask extends LeafTask {
 
     @Override
     public boolean checkConditions() {
-        if(bb.getPath() == null || bb.getGameState() == null || bb.getTarget() == null){
+        if(bb.getPath() == null || bb.getGameState() == null || bb.getTargetHero() == null){
             return false;
         }
         return true;
@@ -60,20 +60,25 @@ public class MoveToTargetHeroTask extends LeafTask {
      */
     @Override
     public void perform() {
+
+        if(curPathIdx > bb.getPath().getVertices().size() - 1){
+            control.finishWithFailure();
+            return;
+        }
         //A short block to check whether the target has moved.  He likely has and we'll fail,
         //if not though we'll keep going after him.
-        Vertex target = bb.getTarget();
+
+        //Since there are a bunch of changes here we need to actually pull the last
+        //node of the path and make sure that node is correct at this point.
+        Vertex target = bb.path.getVertices().getLast();
         boolean flag = false;
-        Map<GameState.Position, GameState.Hero> heroPos = bb.getGameState().getHeroesByPosition();
-        for(GameState.Position pos : heroPos.keySet()){
-            Vertex cur = new Vertex(pos, null);
-            //This is where the difference between moveToTargetHero and moveToTarget differ
-            //The bloodandgold bot targets the same bot repeatedly.
-            if(bb.targetHero.getPos().getY() == target.getPosition().getY() && bb.targetHero.getPos().getX() == target.getPosition().getX()){
-                //If we're in here then the target hasn't moved
-                flag = true;
-            }
+        //What we're actually doing here is checking that the target is in the same position that we pathfound to.
+        //There's no need to do any looping.
+        if(bb.targetHero.getPos().getY() == target.getPosition().getY() && bb.targetHero.getPos().getX() == target.getPosition().getX()){
+            //If we're in here then the target hasn't moved
+            flag = true;
         }
+
         //If the flag is false then there is no hero at our target position
         //therefore we fail and go out to look for another path.
         if(!flag){

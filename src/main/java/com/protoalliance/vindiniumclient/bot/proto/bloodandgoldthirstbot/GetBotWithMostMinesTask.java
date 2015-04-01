@@ -4,7 +4,6 @@ import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.Blackboard;
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.LeafTask;
 import com.protoalliance.vindiniumclient.bot.proto.ProtoGameState;
 import com.protoalliance.vindiniumclient.bot.proto.Vertex;
-import com.protoalliance.vindiniumclient.bot.proto.astar.Manhattan;
 import com.protoalliance.vindiniumclient.dto.GameState;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,7 +17,7 @@ import java.util.Map;
 public class GetBotWithMostMinesTask extends LeafTask {
     private static final Logger logger = LogManager.getLogger(GetBotWithMostMinesTask.class);
     private ProtoGameState state;
-    private Vertex target;
+    private GameState.Hero targetHero;
     public GetBotWithMostMinesTask(Blackboard bb) {
         super(bb);
     }
@@ -42,7 +41,7 @@ public class GetBotWithMostMinesTask extends LeafTask {
 
     @Override
     public void end() {
-        logger.info("Target at " + target);
+        logger.info("Target hero " + targetHero.getName());
     }
 
     /**
@@ -61,24 +60,28 @@ public class GetBotWithMostMinesTask extends LeafTask {
     public void perform() {
         this.state = bb.getGameState();
         int maxMineCount = Integer.MIN_VALUE;
-        GameState.Hero tar = null;
+        GameState.Hero finTar = null;
+        String myName = state.getMe().getName();
+        String myId = state.getMe().getUserId();
+        GameState.Position myPos = state.getMe().getPos();
 
-
-        Map<GameState.Hero, Integer> heroPos = state.getHeroesByMineCount();
-        for(GameState.Hero hero : heroPos.keySet()){
-            if(hero == state.getMe()){
-                //Don't target yourself!
+        Map<GameState.Position, GameState.Hero> heroPos = state.getHeroesByPosition();
+        for(GameState.Position pos : heroPos.keySet()){
+            GameState.Hero tar = heroPos.get(pos);
+            if(pos.getX() == myPos.getX() && pos.getY() == myPos.getY()){
                 continue;
             }
 
-            int val = hero.getMineCount();
+            int mineCount = tar.getMineCount();
 
-            if(val > maxMineCount){
-                tar = hero;
-                maxMineCount = hero.getMineCount();
+            if(mineCount >= maxMineCount){
+                finTar = tar;
+                maxMineCount = tar.getMineCount();
             }
         }
-        bb.setTargetHero(tar);
+        bb.setTargetHero(finTar);
+        targetHero = finTar;
+        String tarName = finTar.getName();
         control.finishWithSuccess();
         return;
     }
