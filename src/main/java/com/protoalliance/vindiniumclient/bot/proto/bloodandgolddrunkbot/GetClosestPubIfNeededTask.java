@@ -55,7 +55,9 @@ public class GetClosestPubIfNeededTask extends LeafTask {
 
     @Override
     public void end() {
-        logger.info("Target at " + target);
+        if(target != null) {
+            logger.info("Target pub at (" + target.getPosition().getX() + "," + target.getPosition().getY() + ")");
+        }
     }
 
     /**
@@ -119,9 +121,11 @@ public class GetClosestPubIfNeededTask extends LeafTask {
             man.setGoalVertex(cur);
             int est = man.estimate(myVert);
             if(est < minDist){
+                minDist = est;
                 target = cur;
             }
         }
+        this.target = target;
         bb.setTarget(target);
         control.finishWithSuccess();
         return;
@@ -135,6 +139,7 @@ public class GetClosestPubIfNeededTask extends LeafTask {
         for(Vertex neighbor : myVert.getAdjacentVertices()){
             if(pubMap.get(neighbor.getPosition()) != null){
                 Vertex targetVertex = new Vertex(neighbor.getPosition(), null);
+                this.target = targetVertex;
                 return targetVertex;
             }
         }

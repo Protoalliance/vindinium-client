@@ -72,6 +72,7 @@ public class GetClosestMineTask extends LeafTask{
                 man.setGoalVertex(cur);
                 int est = man.estimate(myVert);
                 if (est < minDist) {
+                    minDist = est;
                     target = cur;
                 }
             }
