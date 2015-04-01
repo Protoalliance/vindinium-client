@@ -25,6 +25,7 @@ public class RunUntilFailureDecorator extends ParentTask {
     public RunUntilFailureDecorator(Blackboard bb, Task task) {
         super(bb);
         this.task = task;
+        control.subTasks.add(task);
     }
 
     /**

@@ -16,6 +16,7 @@ public class BloodthirstBot implements ProtoBot{
 
     public BloodthirstBot(){
         bb = new Blackboard();
+        bb.move = null;
         seq = new ChaseToKillSequence(bb);
     }
 
@@ -26,23 +27,33 @@ public class BloodthirstBot implements ProtoBot{
             seq = new ChaseToKillSequence(bb);
             seq.getController().safeStart();
             bb.setGameState(state);
+            bb.move = null;
         } else {
             //if we're here we haven't just started at the beginning
             //and we haven't just started a new run of the entire tree
             //so just reset the blackboard to the current state
             bb.setGameState(state);
+            bb.move = null;
         }
 
         //The idea here is that we keep calling until bb.move is a real
         //move or we just finish for some reason without that happening.
-        while (bb.move == null && !seq.getController().finished()){
-            seq.perform();
+        while(bb.move == null) {
+            while (bb.move == null && !seq.getController().finished()) {
+                seq.perform();
+            }
+            if(seq.getController().succeeded()){
+                seq = new ChaseToKillSequence(bb);
+                seq.getController().safeStart();
+            }
+            if(seq.getController().failed()){
+                logger.info("The sequence failed!  This shouldn't happen!");
+                break;
+            }
         }
-        if(seq.getController().finished() && bb.move == null) {
-            logger.info("We finished the entire tree and returned null!");
-        }else{
-            logger.info("We returned a move of " + bb.move);
-        }
+
+        logger.info("We returned a move of " + bb.move);
+
         return bb.move;
     }
 

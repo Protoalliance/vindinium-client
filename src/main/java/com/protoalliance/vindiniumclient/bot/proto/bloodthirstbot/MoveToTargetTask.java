@@ -59,6 +59,11 @@ public class MoveToTargetTask extends LeafTask {
      */
     @Override
     public void perform() {
+
+        if(curPathIdx > path.getVertices().size() - 1){
+            control.finishWithFailure();
+            return;
+        }
         //A short block to check whether the target has moved.  He likely has and we'll fail,
         //if not though we'll keep going after him.
         Vertex target = bb.getTarget();

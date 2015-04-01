@@ -90,9 +90,7 @@ public abstract class ParentTask extends Task {
         //and it's not started yet, start it.
         if( !control.currentTask.getController().started()){
             control.currentTask.getController().safeStart();
-        }
-        //Task is finished
-        else if(control.currentTask.getController().finished()){
+        } else if(control.currentTask.getController().finished()){
             //end the task
             control.currentTask.getController().safeEnd();
             //Check success or failure
