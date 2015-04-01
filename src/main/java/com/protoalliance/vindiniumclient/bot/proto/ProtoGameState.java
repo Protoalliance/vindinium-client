@@ -12,6 +12,7 @@ public class ProtoGameState {
     private final Map<GameState.Position, GameState.Hero> heroesByPosition;
     private final Map<Integer, GameState.Hero> heroesById;
     private final Map<GameState.Position, Vertex> boardGraph;
+    private Map<GameState.Hero, Integer> heroesByMineCount;
     private final GameState.Hero me;
 
     /**
@@ -24,11 +25,13 @@ public class ProtoGameState {
         pubs = new HashMap<>();
         heroesById = new HashMap<>();
         heroesByPosition = new HashMap<>();
+        heroesByMineCount = new HashMap<>();
 
         // Hero stuffs
         for(GameState.Hero currentHero : gameState.getGame().getHeroes()) {
             this.heroesByPosition.put(currentHero.getPos(), currentHero);
             this.heroesById.put(currentHero.getId(), currentHero);
+            this.heroesByMineCount.put(currentHero, currentHero.getMineCount());
         }
 
         this.me = gameState.getHero();
@@ -123,6 +126,7 @@ public class ProtoGameState {
         for(GameState.Hero currentHero : updatedState.getGame().getHeroes()) {
             this.heroesByPosition.put(currentHero.getPos(), currentHero);
             this.heroesById.put(currentHero.getId(), currentHero);
+            //this.heroesByMineCount.put(currentHero, currentHero.getMineCount());
         }
         this.me = updatedState.getHero();
 
@@ -145,6 +149,7 @@ public class ProtoGameState {
 
             this.mines.put(mine.getPosition(), mine);
         }
+
     }
 
     public ProtoGameState(Map<GameState.Position, Mine> mines, Map<GameState.Position, Pub> pubs,
@@ -172,6 +177,10 @@ public class ProtoGameState {
 
     public Map<Integer, GameState.Hero> getHeroesById() {
         return heroesById;
+    }
+
+    public Map<GameState.Hero, Integer> getHeroesByMineCount(){
+        return heroesByMineCount;
     }
 
     public Map<GameState.Position, Vertex> getBoardGraph() {
