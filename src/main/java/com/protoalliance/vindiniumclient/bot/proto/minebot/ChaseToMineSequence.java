@@ -27,21 +27,14 @@ public class ChaseToMineSequence extends ParentTask{
      * success.
      */
     @Override
-    public void childSucceeded()
-    {
-        int curPos =
-                control.subTasks.indexOf(control.currentTask);
-        if( curPos ==
-                (control.subTasks.size() - 1))
-        {
+    public void childSucceeded() {
+        int curPos = control.subTasks.indexOf(control.currentTask);
+        if( curPos == (control.subTasks.size() - 1)) {
             control.finishWithSuccess();
-        }
-        else
-        {
-            control.currentTask =
-                    control.subTasks.get(curPos+1);
-            if(!control.currentTask.checkConditions())
-            {
+        } else {
+            //Pre increment the pointer to the next position.
+            control.currentTask = control.subTasks.get(++curPos);
+            if(!control.currentTask.checkConditions()) {
                 control.finishWithFailure();
             }
         }

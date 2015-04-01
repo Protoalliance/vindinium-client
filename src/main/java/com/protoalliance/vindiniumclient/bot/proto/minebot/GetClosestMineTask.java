@@ -55,26 +55,33 @@ public class GetClosestMineTask extends LeafTask{
      */
     @Override
     public void perform() {
-        state = bb.getGameState();
         Vertex target = null;
         int minDist = Integer.MAX_VALUE;
-        Vertex cur = null;
+        Vertex cur;
         if (state == null) {
             logger.error("State is null");
         }
-        GameState.Position myPos =state.getMe().getPos();
+        GameState.Position myPos = bb.getGameState().getMe().getPos();
         Vertex myVert = new Vertex(myPos, null);
         Manhattan man = new Manhattan(null);
-        Map<GameState.Position, Mine> minePos = state.getMines();
+
+        Map<GameState.Position, Mine> minePos = bb.getGameState().getMines();
         for(GameState.Position pos : minePos.keySet()){
-            if (minePos.get(pos).getOwner() != state.getMe()) {
-                cur = new Vertex(pos, null);
-                man.setGoalVertex(cur);
-                int est = man.estimate(myVert);
-                if (est < minDist) {
-                    minDist = est;
-                    target = cur;
-                }
+            //If I already own the mine skip it.
+            //needs short circuit execution since it's
+            //possible that the owner key is null at the
+            //beginning of the game.
+            if(minePos.get(pos).getOwner() != null &&
+                    minePos.get(pos).getOwner().getName() == bb.getGameState().getMe().getName()){
+                continue;
+            }
+            cur = new Vertex(pos, null);
+
+            man.setGoalVertex(cur);
+            int est = man.estimate(myVert);
+            if(est < minDist){
+                target = cur;
+                minDist = est;
             }
         }
         bb.setTarget(target);

@@ -48,20 +48,18 @@ public class MineBot implements ProtoBot{
             while (bb.move == null && !mineSequence.getController().finished()) {
                 mineSequence.perform();
             }
-            if (mineSequence.getController().finished() && bb.move == null) {
-                if (mineSequence.getController().succeeded()) {
-                    //If we're here the tree completed, so we need
-                    //Since the tree completed, either we
-                    //actually finished the path or the target bot
-                    //moved.
-                    mineSequence = new ChaseToMineSequence(bb);
-                    mineSequence.getController().safeStart();
-                    bb.move = null;
-                }
+            if(mineSequence.getController().succeeded()){
+                mineSequence = new ChaseToMineSequence(bb);
+                mineSequence.getController().safeStart();
+            }
+            if(mineSequence.getController().failed()){
+                logger.info("The sequence failed!  This shouldn't happen!");
+                break;
             }
         }
 
-        System.out.println("Returning a move of " + bb.move);
+        logger.info("We returned a move of " + bb.move);
+
         return bb.move;
     }
 

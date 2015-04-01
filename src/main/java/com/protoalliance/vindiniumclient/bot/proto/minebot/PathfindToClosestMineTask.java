@@ -10,6 +10,8 @@ import com.protoalliance.vindiniumclient.dto.GameState;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Map;
+
 /**
  * Created by Joseph on 3/30/2015.
  */
@@ -41,7 +43,10 @@ public class PathfindToClosestMineTask extends LeafTask{
     @Override
     public void perform() {
         GameState.Position myPos = bb.getGameState().getMe().getPos();
-        Vertex myVert = new Vertex(myPos, null);
+        //Need to actually get vertex in graph rather than
+        //make up a vertex.
+        Map graph = bb.getGameState().getBoardGraph();
+        Vertex myVert = (Vertex) graph.get(myPos);
 
 
         AStar a = new AStar(bb.getGameState(), myVert, bb.getTarget());

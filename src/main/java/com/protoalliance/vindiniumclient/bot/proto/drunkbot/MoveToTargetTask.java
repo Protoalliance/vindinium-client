@@ -73,14 +73,13 @@ public class MoveToTargetTask extends LeafTask {
         //necessary to start pathfinding all over again.  If it's
         //the first move on the path though it's not a problem.
         Vertex target = bb.getTarget();
-        boolean flag = false;
         if(curPathIdx == 0){
             //Do nothing
             //we haven't started
             //the path yet!
         }else{
             Vertex whereWeShouldBe = bb.getPath().getVertices().get(curPathIdx - 1);
-            if(whereWeShouldBe.getPosition().getY() == bb.getGameState().getMe().getPos().getY() && whereWeShouldBe.getPosition().getY() == bb.getGameState().getMe().getPos().getY()){
+            if(whereWeShouldBe.getPosition().getY() == bb.getGameState().getMe().getPos().getY() && whereWeShouldBe.getPosition().getX() == bb.getGameState().getMe().getPos().getX()){
                 //Do nothing since we're where we should be
             }else{
                 //We finish with failure since we
