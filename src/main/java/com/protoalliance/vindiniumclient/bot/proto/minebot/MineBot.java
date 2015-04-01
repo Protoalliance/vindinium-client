@@ -20,7 +20,6 @@ public class MineBot implements ProtoBot{
     public MineBot() {
         bb = new Blackboard();
         mineSequence = new ChaseToMineSequence(bb);
-        System.out.println("Initializing MineBot");
     }
 
     @Override
@@ -30,7 +29,6 @@ public class MineBot implements ProtoBot{
             mineSequence = new ChaseToMineSequence(bb);
             mineSequence.getController().safeStart();
             bb.move = null;
-            logger.info("Task is finished or first run in MineBot");
         } else {
             {
                 //if we're here we haven't just started at the beginning
@@ -53,12 +51,9 @@ public class MineBot implements ProtoBot{
                 mineSequence.getController().safeStart();
             }
             if(mineSequence.getController().failed()){
-                logger.info("The sequence failed!  This shouldn't happen!");
                 break;
             }
         }
-
-        logger.info("We returned a move of " + bb.move);
 
         return bb.move;
     }

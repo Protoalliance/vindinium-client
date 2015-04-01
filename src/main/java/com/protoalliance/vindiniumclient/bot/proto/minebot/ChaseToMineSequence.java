@@ -2,6 +2,7 @@ package com.protoalliance.vindiniumclient.bot.proto.minebot;
 
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.Blackboard;
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.ParentTask;
+import com.protoalliance.vindiniumclient.bot.proto.bloodthirstbot.RunUntilFailureDecorator;
 
 /**
  * Created by Joseph on 3/30/2015.
@@ -11,7 +12,7 @@ public class ChaseToMineSequence extends ParentTask{
         super(bb);
         control.subTasks.add(new GetClosestMineTask(bb));
         control.subTasks.add(new PathfindToClosestMineTask(bb));
-        control.subTasks.add(new MoveToTargetTask(bb));
+        control.subTasks.add(new RunUntilFailureDecorator(bb, new MoveToTargetTask(bb)));
 
     }
 

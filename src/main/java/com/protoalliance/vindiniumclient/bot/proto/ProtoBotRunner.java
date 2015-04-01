@@ -12,6 +12,7 @@ import com.protoalliance.vindiniumclient.dto.Move;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Map;
 import java.util.concurrent.Callable;
 
 public class ProtoBotRunner implements Callable<GameState> {
@@ -25,6 +26,7 @@ public class ProtoBotRunner implements Callable<GameState> {
                 }
             });
     private static final Logger logger = LogManager.getLogger(ProtoBotRunner.class);
+    private static final int NUM_RUNS = 6;
 
     private final ApiKey apiKey;
     private final GenericUrl gameUrl;
@@ -42,7 +44,7 @@ public class ProtoBotRunner implements Callable<GameState> {
         HttpRequest request;
         HttpResponse response;
         GameState gameState = null;
-        ProtoGameState protoGameState;
+        ProtoGameState protoGameState = null;
 
         try {
             // Initial request
@@ -79,6 +81,12 @@ public class ProtoBotRunner implements Callable<GameState> {
         }
 
         logger.info("Game over");
+        Map<Integer, GameState.Hero> heroes = protoGameState.getHeroesById();
+        for(Integer id: heroes.keySet()){
+            GameState.Hero cur = heroes.get(id);
+            logger.info("Bot id: " + cur.getId() + " bot name: " + cur.getName() + " gold count: " + cur.getGold());
+        }
+
         return gameState;
     }
 }

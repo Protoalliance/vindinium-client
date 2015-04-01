@@ -3,7 +3,6 @@ package com.protoalliance.vindiniumclient.bot.proto.minebot;
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.Blackboard;
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.LeafTask;
 import com.protoalliance.vindiniumclient.bot.proto.Mine;
-import com.protoalliance.vindiniumclient.bot.proto.ProtoGameState;
 import com.protoalliance.vindiniumclient.bot.proto.Vertex;
 import com.protoalliance.vindiniumclient.bot.proto.astar.Manhattan;
 import com.protoalliance.vindiniumclient.dto.GameState;
@@ -17,8 +16,6 @@ import java.util.Map;
  */
 public class GetClosestMineTask extends LeafTask{
     private static final Logger logger = LogManager.getLogger(GetClosestMineTask.class);
-    private ProtoGameState state;
-    private Vertex target;
     public GetClosestMineTask(Blackboard bb) {
         super(bb);
     }
@@ -34,12 +31,12 @@ public class GetClosestMineTask extends LeafTask{
 
     @Override
     public void start() {
-        logger.info("Getting target.");
+
     }
 
     @Override
     public void end() {
-        logger.info("Target at " + target);
+
     }
     /**
      * Perform assumes that it will always
@@ -58,7 +55,7 @@ public class GetClosestMineTask extends LeafTask{
         Vertex target = null;
         int minDist = Integer.MAX_VALUE;
         Vertex cur;
-        if (state == null) {
+        if (bb.getGameState() == null) {
             logger.error("State is null");
         }
         GameState.Position myPos = bb.getGameState().getMe().getPos();
