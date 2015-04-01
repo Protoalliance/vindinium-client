@@ -4,6 +4,7 @@ import com.protoalliance.vindiniumclient.bot.BotMove;
 import com.protoalliance.vindiniumclient.bot.proto.ProtoGameState;
 import com.protoalliance.vindiniumclient.bot.proto.Vertex;
 import com.protoalliance.vindiniumclient.bot.proto.astar.Path;
+import com.protoalliance.vindiniumclient.dto.GameState;
 
 /**
  * Created by Joseph on 3/27/2015.
@@ -13,9 +14,18 @@ public class Blackboard {
     public Path path;
     public Vertex astarTarget;
     public ProtoGameState state;
+    public GameState.Hero targetHero;
 
     public Blackboard(){
         //null constructor since we probably won't want anything here yet.
+    }
+
+    public void setTargetHero(GameState.Hero hero){
+        this.targetHero = hero;
+    }
+
+    public GameState.Hero getTargetHero(){
+        return targetHero;
     }
 
     public void setTarget(Vertex target){
