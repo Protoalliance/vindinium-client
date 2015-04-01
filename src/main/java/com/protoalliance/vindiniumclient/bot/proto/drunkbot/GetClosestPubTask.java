@@ -15,6 +15,11 @@ import java.util.Map;
 
 
 /**
+ * This is the simplest version of this behavior.
+ * There's no checking to make sure that we actually need
+ * health, but to even show what the behavior is, we need
+ * to make sure we have gold to actually get into the pub.
+ *
  * Created by Matthew on 3/29/2015.
  */
 public class GetClosestPubTask extends LeafTask {
@@ -61,6 +66,15 @@ public class GetClosestPubTask extends LeafTask {
      */
     @Override
     public void perform() {
+        if(bb.getGameState().getMe().getGold() < 2){
+            //We first check to see if we have money
+            //for booze!
+            //If we don't we failed.
+            logger.info("We don't have any cash!");
+            control.finishWithFailure();
+            return;
+        }
+
         this.state = bb.getGameState();
         Vertex target = null;
         int minDist = Integer.MAX_VALUE;

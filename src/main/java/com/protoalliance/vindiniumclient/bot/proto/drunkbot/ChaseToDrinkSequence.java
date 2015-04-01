@@ -18,8 +18,7 @@ public class ChaseToDrinkSequence extends ParentTask {
     }
 
     @Override
-    public void childFailed()
-    {
+    public void childFailed() {
         control.finishWithFailure();
     }
     /**

@@ -12,20 +12,20 @@ import org.apache.logging.log4j.Logger;
  */
 public class DrunkBot implements ProtoBot{
     private Blackboard bb;
-    private ChaseToDrinkSequence seq;
+    private DoIHaveCashSelector seq;
     private static final Logger logger = LogManager.getLogger(DrunkBot.class);
 
     public DrunkBot(){
         bb = new Blackboard();
         bb.move = null;
-        seq = new ChaseToDrinkSequence(bb);
+        seq = new DoIHaveCashSelector(bb);
     }
 
     @Override
     public BotMove move(ProtoGameState state) {
 
         if (seq.getController().finished() || !seq.getController().started()) {
-            seq = new ChaseToDrinkSequence(bb);
+            seq = new DoIHaveCashSelector(bb);
             seq.getController().safeStart();
             bb.setGameState(state);
             bb.move = null;
@@ -44,7 +44,7 @@ public class DrunkBot implements ProtoBot{
                 seq.perform();
             }
             if(seq.getController().succeeded()){
-                seq = new ChaseToDrinkSequence(bb);
+                seq = new DoIHaveCashSelector(bb);
                 seq.getController().safeStart();
             }
             if(seq.getController().failed()){
