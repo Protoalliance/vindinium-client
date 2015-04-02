@@ -2,6 +2,7 @@ package com.protoalliance.vindiniumclient.bot.proto;
 
 import com.google.api.client.http.*;
 import com.google.api.client.http.apache.ApacheHttpTransport;
+import com.google.api.client.http.json.JsonHttpContent;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.JsonObjectParser;
 import com.google.api.client.json.gson.GsonFactory;
@@ -12,6 +13,8 @@ import com.protoalliance.vindiniumclient.dto.Move;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
@@ -27,6 +30,10 @@ public class ProtoBotRunner implements Callable<GameState> {
             });
     private static final Logger logger = LogManager.getLogger(ProtoBotRunner.class);
     private static final int NUM_RUNS = 6;
+
+    //This is the string you can use to set the
+    //map value.
+    private static final String MAP_ID = "m1";
 
     private final ApiKey apiKey;
     private final GenericUrl gameUrl;
@@ -50,6 +57,7 @@ public class ProtoBotRunner implements Callable<GameState> {
             // Initial request
             logger.info("Sending initial request...");
             content = new UrlEncodedContent(apiKey);
+
             request = REQUEST_FACTORY.buildPostRequest(gameUrl, content);
             request.setReadTimeout(0); // Wait forever to be assigned to a game
             response = request.execute();

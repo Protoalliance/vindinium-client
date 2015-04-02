@@ -32,14 +32,14 @@ public class MoveToTargetHeroTask extends LeafTask {
 
     @Override
     public void start() {
-        logger.info("Setting next move.");
+       // logger.info("Setting next move.");
         this.path = bb.getPath();
         curPathIdx = 1;
     }
 
     @Override
     public void end() {
-        logger.info("Moving " + retMove);
+        //logger.info("Moving " + retMove);
     }
 
     /**
@@ -86,7 +86,7 @@ public class MoveToTargetHeroTask extends LeafTask {
         //current position and the next path vertex.
         retMove = BotUtils.directionTowards(bb.getGameState().getMe().getPos(), path.getVertices().get(curPathIdx).getPosition());
         //Hopefully this works and we target the correct direction, if not we're screwed.
-        logger.info("Move direction " + retMove + " target vertex (" + target.getPosition().getX() + "," + target.getPosition().getY() + ")");
+        //logger.info("Move direction " + retMove + " target vertex (" + target.getPosition().getX() + "," + target.getPosition().getY() + ")");
         bb.move = retMove;
         curPathIdx++;
         control.finishWithSuccess();

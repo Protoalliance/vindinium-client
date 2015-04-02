@@ -34,28 +34,28 @@ public class RandomMovementTask extends LeafTask {
     @Override
     public void perform() {
 
-        logger.info("Deciding which direction to go.");
+        //logger.info("Deciding which direction to go.");
         int randomNumber = (int)(Math.random() * 4);
 
         switch(randomNumber) {
             case 1:
-                logger.info("Going North.");
+              //  logger.info("Going North.");
                 bb.move = BotMove.NORTH;
                 break;
             case 2:
-                logger.info("Going south.");
+             //   logger.info("Going south.");
                 bb.move = BotMove.SOUTH;
                 break;
             case 3:
-                logger.info("Going east.");
+             //   logger.info("Going east.");
                 bb.move = BotMove.EAST;
                 break;
             case 4:
-                logger.info("Going west.");
+             //   logger.info("Going west.");
                 bb.move = BotMove.WEST;
                 break;
             default:
-                logger.info("Going nowhere!");
+            //    logger.info("Going nowhere!");
                 bb.move = BotMove.STAY;
                 break;
         }

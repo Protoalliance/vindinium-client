@@ -35,13 +35,13 @@ public class GetClosestBotTask extends LeafTask {
 
     @Override
     public void start() {
-        logger.info("Getting target.");
+       // logger.info("Getting target.");
 
     }
 
     @Override
     public void end() {
-        logger.info("Target at " + target);
+       // logger.info("Target at " + target);
     }
 
     /**

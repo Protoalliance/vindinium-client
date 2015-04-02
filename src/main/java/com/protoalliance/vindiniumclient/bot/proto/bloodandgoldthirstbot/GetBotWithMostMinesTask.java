@@ -41,7 +41,7 @@ public class GetBotWithMostMinesTask extends LeafTask {
 
     @Override
     public void end() {
-        logger.info("Target hero " + targetHero.getName());
+        //logger.info("Target hero " + targetHero.getName());
     }
 
     /**

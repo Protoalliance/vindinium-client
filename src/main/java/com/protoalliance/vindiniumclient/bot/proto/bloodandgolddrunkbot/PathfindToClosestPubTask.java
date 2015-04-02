@@ -31,7 +31,7 @@ public class PathfindToClosestPubTask extends LeafTask {
 
     @Override
     public void start() {
-        logger.info("Calculating Path");
+        //logger.info("Calculating Path");
     }
 
     @Override
@@ -51,12 +51,12 @@ public class PathfindToClosestPubTask extends LeafTask {
         AStar a = new AStar(bb.getGameState(), myVert, bb.getTarget());
         Path p = a.getPath();
         if(p == null){
-            logger.info("There's no path!");
+            //logger.info("There's no path!");
             control.finishWithFailure();
             return;
         }
         bb.setPath(p);
-        logger.info("Path found is " + p);
+        //logger.info("Path found is " + p);
         control.finishWithSuccess();
         return;
     }

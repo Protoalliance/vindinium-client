@@ -50,7 +50,7 @@ public abstract class ParentTask extends Task {
      */
 
     public boolean checkConditions() {
-        logger.info("Checking Conditions");
+       // logger.info("Checking Conditions");
         return control.subTasks.size() > 0;
     }
     /**
@@ -75,7 +75,7 @@ public abstract class ParentTask extends Task {
      */
 
     public void perform() {
-        logger.info("Doing Action");
+        //logger.info("Doing Action");
         if(control.finished()) {
         // If this parent task is finished
         // return without doing naught.
@@ -111,7 +111,7 @@ public abstract class ParentTask extends Task {
      * Ends the task
      */
     public void end() {
-        logger.info("Ending");
+        //logger.info("Ending");
     }
     /**
      * Starts the task, and points the
@@ -119,10 +119,10 @@ public abstract class ParentTask extends Task {
      * of the available child tasks.
      */
     public void start() {
-        logger.info("Starting");
+       // logger.info("Starting");
         control.currentTask = control.subTasks.get(0);
         if(control.currentTask == null) {
-            logger.info("Current task has a null action");
+           // logger.info("Current task has a null action");
         }
     }
 }

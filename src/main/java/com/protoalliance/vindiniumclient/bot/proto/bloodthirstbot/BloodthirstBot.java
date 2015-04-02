@@ -47,12 +47,12 @@ public class BloodthirstBot implements ProtoBot{
                 seq.getController().safeStart();
             }
             if(seq.getController().failed()){
-                logger.info("The sequence failed!  This shouldn't happen!");
+                //logger.info("The sequence failed!  This shouldn't happen!");
                 break;
             }
         }
 
-        logger.info("We returned a move of " + bb.move);
+        //logger.info("We returned a move of " + bb.move);
 
         return bb.move;
     }

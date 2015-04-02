@@ -49,14 +49,14 @@ public class GetClosestPubIfNeededTask extends LeafTask {
 
     @Override
     public void start() {
-        logger.info("Getting target.");
+        //logger.info("Getting target.");
 
     }
 
     @Override
     public void end() {
         if(target != null) {
-            logger.info("Target pub at (" + target.getPosition().getX() + "," + target.getPosition().getY() + ")");
+            //logger.info("Target pub at (" + target.getPosition().getX() + "," + target.getPosition().getY() + ")");
         }
     }
 
@@ -78,7 +78,7 @@ public class GetClosestPubIfNeededTask extends LeafTask {
             //We first check to see if we have money
             //for booze!
             //If we don't we failed.
-            logger.info("We don't have any cash!");
+            //logger.info("We don't have any cash!");
             control.finishWithFailure();
             return;
         }
@@ -95,12 +95,12 @@ public class GetClosestPubIfNeededTask extends LeafTask {
                 control.finishWithSuccess();
                 return;
             }
-            logger.info("We don't need booze yet!");
+            //logger.info("We don't need booze yet!");
             control.finishWithFailure();
             return;
         }
 
-        logger.info("We need booze and we will get it!");
+        //logger.info("We need booze and we will get it!");
         Vertex target = null;
         int minDist = Integer.MAX_VALUE;
         Vertex cur = null;
@@ -112,7 +112,7 @@ public class GetClosestPubIfNeededTask extends LeafTask {
             Pub p = pubMap.get(pos);
             if(p.getPosition().getX() == myPos.getX() && p.getPosition().getY() == myPos.getY()){
                 //This really shouldn't happen.
-                logger.info("We are already at the pub!");
+                //logger.info("We are already at the pub!");
                 bb.move = BotMove.STAY;
                 control.finishWithSuccess();
                 return;

@@ -43,13 +43,13 @@ public class GetClosestPubTask extends LeafTask {
 
     @Override
     public void start() {
-        logger.info("Getting target.");
+      //  logger.info("Getting target.");
 
     }
 
     @Override
     public void end() {
-        logger.info("Target at " + target);
+       // logger.info("Target at " + target);
     }
 
     /**
@@ -70,7 +70,7 @@ public class GetClosestPubTask extends LeafTask {
             //We first check to see if we have money
             //for booze!
             //If we don't we failed.
-            logger.info("We don't have any cash!");
+           // logger.info("We don't have any cash!");
             control.finishWithFailure();
             return;
         }
@@ -92,7 +92,7 @@ public class GetClosestPubTask extends LeafTask {
                 //should notice that there has been a move returned.
                 //Additionally I'm not totally sure that this will even ever
                 //run.
-                logger.info("We are already at the pub!");
+               // logger.info("We are already at the pub!");
                 bb.move = BotMove.STAY;
                 control.finishWithSuccess();
                 return;

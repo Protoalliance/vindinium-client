@@ -56,7 +56,7 @@ public class RunUntilFailureDecorator extends ParentTask {
      * Ends the task
      */
     public void end() {
-        logger.info("Run until failure complete.");
+        //logger.info("Run until failure complete.");
     }
 
     /**
@@ -67,7 +67,7 @@ public class RunUntilFailureDecorator extends ParentTask {
 
     @Override
     public void start() {
-        logger.info("Starting run until failure.");
+       // logger.info("Starting run until failure.");
         control.currentTask = task;
         control.currentTask.getController().safeStart();
         control.currentTask.perform();
@@ -80,12 +80,12 @@ public class RunUntilFailureDecorator extends ParentTask {
      */
     @Override
     public void perform() {
-        logger.info("Doing Action");
+       // logger.info("Doing Action");
 
         if (control.currentTask == null) {
             // If there is a null child task
             // selected we've done something wrong
-            logger.info("Current task was null!");
+            //logger.info("Current task was null!");
             return;
         }
 
