@@ -20,7 +20,7 @@ import org.apache.logging.log4j.Logger;
  */
 public class Main {
     private static final Logger logger = LogManager.getLogger(Main.class);
-    private static final Logger gameStateLogger = LogManager.getLogger("gameStateLogger");
+    private static final int NUM_RUNS = 5;
 
     public static void main(String args[]) throws Exception {
 
@@ -49,18 +49,22 @@ public class Main {
             gameUrl = new VindiniumUrl(arena);
         }
 
-        switch(botType) {
-            case "simple":
-                runSimpleBot(key, map, gameUrl, botClass);
-                break;
-            case "advanced":
-                runAdvancedBot(key, map, gameUrl, botClass);
-                break;
-            case "proto":
-                runProtoBot(key, map, gameUrl, botClass);
-                break;
-            default:
-                throw new RuntimeException("The bot type must be simple or advanced and must match the type of the bot.");
+        for (int i = 0; i < NUM_RUNS; i++) {
+            System.out.println("Beginning run " + (i + 1) + " of " + NUM_RUNS);
+            logger.info("Beginning run " + (i + 1) + " of " + NUM_RUNS);
+            switch (botType) {
+                case "simple":
+                    runSimpleBot(key, map, gameUrl, botClass);
+                    break;
+                case "advanced":
+                    runAdvancedBot(key, map, gameUrl, botClass);
+                    break;
+                case "proto":
+                    runProtoBot(key, map, gameUrl, botClass);
+                    break;
+                default:
+                    throw new RuntimeException("The bot type must be simple or advanced and must match the type of the bot.");
+            }
         }
     }
 

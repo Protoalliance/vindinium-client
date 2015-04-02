@@ -69,7 +69,7 @@ public class GetClosestMineTask extends LeafTask{
             //possible that the owner key is null at the
             //beginning of the game.
             if(minePos.get(pos).getOwner() != null &&
-                    minePos.get(pos).getOwner().getName() == bb.getGameState().getMe().getName()){
+                    minePos.get(pos).getOwner().getName().equals(bb.getGameState().getMe().getName())){
                 continue;
             }
             cur = new Vertex(pos, null);
@@ -80,6 +80,9 @@ public class GetClosestMineTask extends LeafTask{
                 target = cur;
                 minDist = est;
             }
+        }
+        if (target == null) {
+            control.finishWithFailure();
         }
         bb.setTarget(target);
         control.finishWithSuccess();
