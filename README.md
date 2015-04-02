@@ -2,7 +2,7 @@
 
 ![Build status](https://travis-ci.org/bstempi/vindinium-client.svg)
 
-This is a fork of brianstempin's vindinium-client repo.  We will likely make changes to both the structure of the  project as well as to the bots he originally created.
+This is a fork of brianstempin's vindinium-client repo.  We will likely make changes to both the structure of the project as well as to the bots he originally created.
 
 
 ## Overview
@@ -16,8 +16,8 @@ There are two flavors of the client.  The simple one gives a very bare-bones gam
 ### License
 This software is public domain.
 
-### Author
-Hi, I'm Brian!  You can find me at [my personal website](http://brianstempin.com) or at [GitHub](http://github.com/bstempi).
+### Authors
+This fork was created by students at North Carolina State University as part of a Game AI project. The original Vindinium client was created by Brian Stempin. You can visit [his personal website](http://brianstempin.com) or his [GitHub](http://github.com/bstempi).
 
 ### Setup
 
@@ -33,16 +33,17 @@ To create an uber JAR:
 
     mvn package
     
-Command for running from Maven for advanced murderbot:
+Command for running from Maven for prpto bloodthirstbot on predefined map 1:
 
-    exec:java -Dexec.mainClass=com.protoalliance.vindiniumclient.Main "-Dexec.args=YOURKEY TRAINING proto com.protoalliance.vindiniumclient.bot.proto.bloodthirstbot.BloodthirstBot"
+    exec:java -Dexec.mainClass=com.protoalliance.vindiniumclient.Main "-Dexec.args=YOURKEY TRAINING m1 proto com.protoalliance.vindiniumclient.bot.proto.bloodthirstbot.BloodthirstBot"
 
 #### CLI Usage
-The CLI takes 4 arguments:
+The CLI takes 4 required arguments:
 
 
 * Your key
 * The game URL
+* The map (optional)
 * The bot type
 * The fully qualified class name of the bot that will play
 
@@ -54,8 +55,13 @@ The key is specified by the Vindinium website when a user name is registered.
 ##### Game Url
 Instead of specifying a game URL, a user can say `TRAINING` or `COMPETITION`, which will connect to Vindinium's training and competition arena, respectively.  The only time a user will not use one of these two arguments is when they are connecting to a different server, such as a local development server.
 
-#### Bot Type
+##### Bot Type
 This parameter tells us which type of bot is being used so that the appropriate bot runner can be invoked.  Pass in `simple` for `SimpleBot` or `advanced` for `AdvancedBot`.
+
+##### Map (optional)
+If specified, the game will be run on a predefined map. Predefined maps include `m1`, `m2`, `m3`, `m4`, `m5`, and `m6` and you can see what they look like [here](https://github.com/ornicar/vindinium/blob/master/app/Maps.scala#L15).
+
+You can also specify `m*` as a parameter. Doing so will run the game on all six predefined maps.
 
 ##### Fully Qualified Bot Class Name
 The Main class will reflectively instantiate a `Bot` to play the game.  In order to locate the bot, the fully qualified name is needed, in the general form of `com.packagename.packagenamingpackage.SomeBot`.
