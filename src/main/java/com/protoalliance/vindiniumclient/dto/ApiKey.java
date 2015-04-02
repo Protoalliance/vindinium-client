@@ -10,11 +10,16 @@ public class ApiKey {
     @Key
     private final String key;
 
-    public ApiKey(String key) {
+    @Key
+    private final String map;
+
+    public ApiKey(String key, String map) {
         this.key = key;
+        this.map = map;
     }
 
     public String getKey() {
         return key;
     }
+    public String getMap() { return map; }
 }

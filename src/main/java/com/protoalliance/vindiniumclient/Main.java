@@ -19,9 +19,6 @@ import org.apache.logging.log4j.Logger;
  * CLI program for launching a bot
  */
 public class Main {
-    private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
-    private static final JsonFactory JSON_FACTORY = new GsonFactory();
-    private static final Gson gson = new Gson();
     private static final Logger logger = LogManager.getLogger(Main.class);
     private static final Logger gameStateLogger = LogManager.getLogger("gameStateLogger");
 
@@ -29,59 +26,182 @@ public class Main {
 
         final String key = args[0];
         final String arena = args[1];
-        final String botType = args[2];
-        final String botClass = args[3];
+        String map = args[2];
+        String botType = args[2];
+        String botClass = args[3];
+
+        //Move botType and botClass over one if a map parameter is specified
+        if (map.equals("m1") || map.equals("m2") || map.equals("m3") ||
+                map.equals("m4") || map.equals("m5") || map.equals("m6") || map.equals("m*")) {
+            botType = args[3];
+            botClass = args[4];
+        }
 
         final GenericUrl gameUrl;
 
-        if ("TRAINING".equals(arena))
+        if ("TRAINING".equals(arena)) {
             gameUrl = VindiniumUrl.getTrainingUrl();
-        else if ("COMPETITION".equals(arena))
+        }
+        else if ("COMPETITION".equals(arena)) {
             gameUrl = VindiniumUrl.getCompetitionUrl();
-        else
+        }
+        else {
             gameUrl = new VindiniumUrl(arena);
-
+        }
 
         switch(botType) {
             case "simple":
-                runSimpleBot(key, gameUrl, botClass);
+                runSimpleBot(key, map, gameUrl, botClass);
                 break;
             case "advanced":
-                runAdvancedBot(key, gameUrl, botClass);
+                runAdvancedBot(key, map, gameUrl, botClass);
                 break;
             case "proto":
-                runProtoBot(key, gameUrl, botClass);
+                runProtoBot(key, map, gameUrl, botClass);
                 break;
             default:
                 throw new RuntimeException("The bot type must be simple or advanced and must match the type of the bot.");
         }
     }
 
-    private static void runProtoBot(String key, GenericUrl gameUrl, String botClass) throws Exception {
+    private static void runProtoBot(String key, String map, GenericUrl gameUrl, String botClass) throws Exception {
         Class<?> clazz = Class.forName(botClass);
         Class<? extends ProtoBot> botClazz = clazz.asSubclass(ProtoBot.class);
         ProtoBot bot = botClazz.newInstance();
-        ApiKey apiKey = new ApiKey(key);
-        ProtoBotRunner runner = new ProtoBotRunner(apiKey, gameUrl, bot);
-        runner.call();
+
+        ApiKey apiKey;
+
+        //Ex. no map specified
+        if (map.equals("m1") || map.equals("m2") || map.equals("m3") ||
+                map.equals("m4") || map.equals("m5") || map.equals("m6")) { //Load specified map
+            System.out.println("Loading specified map " + map + "...");
+            apiKey = new ApiKey(key, map);
+            ProtoBotRunner runner = new ProtoBotRunner(apiKey, gameUrl, bot);
+            runner.call();
+        }  else if (!map.equals("m*")){ //Ex. m1, m2, m3, m4, m5, m6
+            System.out.println("Loading random map...");
+            apiKey = new ApiKey(key, "");
+            ProtoBotRunner runner = new ProtoBotRunner(apiKey, gameUrl, bot);
+            runner.call();
+        } else { //m*
+            System.out.println("Loading all maps...");
+            apiKey = new ApiKey(key, "m1");
+            ProtoBotRunner runner = new ProtoBotRunner(apiKey, gameUrl, bot);
+            runner.call();
+
+            apiKey = new ApiKey(key, "m2");
+            runner = new ProtoBotRunner(apiKey, gameUrl, bot);
+            runner.call();
+
+            apiKey = new ApiKey(key, "m3");
+            runner = new ProtoBotRunner(apiKey, gameUrl, bot);
+            runner.call();
+
+            apiKey = new ApiKey(key, "m4");
+            runner = new ProtoBotRunner(apiKey, gameUrl, bot);
+            runner.call();
+
+            apiKey = new ApiKey(key, "m5");
+            runner = new ProtoBotRunner(apiKey, gameUrl, bot);
+            runner.call();
+
+            apiKey = new ApiKey(key, "m6");
+            runner = new ProtoBotRunner(apiKey, gameUrl, bot);
+            runner.call();
+        }
+
+
     }
 
-
-    private static void runAdvancedBot(String key, GenericUrl gameUrl, String botClass) throws Exception {
+    private static void runAdvancedBot(String key, String map, GenericUrl gameUrl, String botClass) throws Exception {
         Class<?> clazz = Class.forName(botClass);
         Class<? extends AdvancedBot> botClazz = clazz.asSubclass(AdvancedBot.class);
         AdvancedBot bot = botClazz.newInstance();
-        ApiKey apiKey = new ApiKey(key);
-        AdvancedBotRunner runner = new AdvancedBotRunner(apiKey, gameUrl, bot);
-        runner.call();
+        ApiKey apiKey;
+
+        //Ex. no map specified
+        if (map.equals("m1") || map.equals("m2") || map.equals("m3") ||
+                map.equals("m4") || map.equals("m5") || map.equals("m6")) { //Load specified map
+            System.out.println("Loading specified map " + map + "...");
+            apiKey = new ApiKey(key, map);
+            AdvancedBotRunner runner = new AdvancedBotRunner(apiKey, gameUrl, bot);
+            runner.call();
+        }  else if (!map.equals("m*")){ //Ex. m1, m2, m3, m4, m5, m6
+            System.out.println("Loading random map...");
+            apiKey = new ApiKey(key, "");
+            AdvancedBotRunner runner = new AdvancedBotRunner(apiKey, gameUrl, bot);
+            runner.call();
+        } else { //m*
+            System.out.println("Loading all maps...");
+            apiKey = new ApiKey(key, "m1");
+            AdvancedBotRunner runner = new AdvancedBotRunner(apiKey, gameUrl, bot);
+            runner.call();
+
+            apiKey = new ApiKey(key, "m2");
+            runner = new AdvancedBotRunner(apiKey, gameUrl, bot);
+            runner.call();
+
+            apiKey = new ApiKey(key, "m3");
+            runner = new AdvancedBotRunner(apiKey, gameUrl, bot);
+            runner.call();
+
+            apiKey = new ApiKey(key, "m4");
+            runner = new AdvancedBotRunner(apiKey, gameUrl, bot);
+            runner.call();
+
+            apiKey = new ApiKey(key, "m5");
+            runner = new AdvancedBotRunner(apiKey, gameUrl, bot);
+            runner.call();
+
+            apiKey = new ApiKey(key, "m6");
+            runner = new AdvancedBotRunner(apiKey, gameUrl, bot);
+            runner.call();
+        }
     }
-    private static void runSimpleBot(String key, GenericUrl gameUrl, String botClass) throws Exception {
+    private static void runSimpleBot(String key, String map, GenericUrl gameUrl, String botClass) throws Exception {
         Class<?> clazz = Class.forName(botClass);
         Class<? extends SimpleBot> botClazz = clazz.asSubclass(SimpleBot.class);
         SimpleBot bot = botClazz.newInstance();
-        ApiKey apiKey = new ApiKey(key);
-        SimpleBotRunner runner = new SimpleBotRunner(apiKey, gameUrl, bot);
-        runner.call();
+        ApiKey apiKey;
+
+        //Ex. no map specified
+        if (map.equals("m1") || map.equals("m2") || map.equals("m3") ||
+                map.equals("m4") || map.equals("m5") || map.equals("m6")) { //Load specified map
+            System.out.println("Loading specified map " + map + "...");
+            apiKey = new ApiKey(key, map);
+            SimpleBotRunner runner = new SimpleBotRunner(apiKey, gameUrl, bot);
+            runner.call();
+        }  else if (!map.equals("m*")){ //Ex. m1, m2, m3, m4, m5, m6
+            System.out.println("Loading random map...");
+            apiKey = new ApiKey(key, "");
+            SimpleBotRunner runner = new SimpleBotRunner(apiKey, gameUrl, bot);
+            runner.call();
+        } else { //m*
+            System.out.println("Loading all maps...");
+            apiKey = new ApiKey(key, "m1");
+            SimpleBotRunner runner = new SimpleBotRunner(apiKey, gameUrl, bot);
+            runner.call();
+
+            apiKey = new ApiKey(key, "m2");
+            runner = new SimpleBotRunner(apiKey, gameUrl, bot);
+            runner.call();
+
+            apiKey = new ApiKey(key, "m3");
+            runner = new SimpleBotRunner(apiKey, gameUrl, bot);
+            runner.call();
+
+            apiKey = new ApiKey(key, "m4");
+            runner = new SimpleBotRunner(apiKey, gameUrl, bot);
+            runner.call();
+
+            apiKey = new ApiKey(key, "m5");
+            runner = new SimpleBotRunner(apiKey, gameUrl, bot);
+            runner.call();
+
+            apiKey = new ApiKey(key, "m6");
+            runner = new SimpleBotRunner(apiKey, gameUrl, bot);
+            runner.call();
+        }
     }
 
     /**
