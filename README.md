@@ -1,6 +1,6 @@
 # vindinium-client
 
-![Build status](https://travis-ci.org/Protoalliance/vindinium-client.svg?branch=master)
+[![Build Status](https://travis-ci.org/CSC510-2015-Axitron/maze.svg?branch=master)](https://travis-ci.org/CSC510-2015-Axitron/maze)
 
 This is a fork of Brian Stempin's Java starter for Vindinium.  We have kept a majority of Mr. Stempin's code intact and have essentially walled off our own section of the project while saving what we needed from his implementation.  There are some changes in our logging structure as well as the ability to run multiple runs of the project and specify the map for training runs.  The rest of our work is located in the proto package.
 
