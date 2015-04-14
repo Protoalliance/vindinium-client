@@ -1,10 +1,11 @@
-package com.protoalliance.vindiniumclient.bot.proto.drunkbot;
+package com.protoalliance.vindiniumclient.bot.proto.miningdrunkbot;
 
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.Blackboard;
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.LeafTask;
 import com.protoalliance.vindiniumclient.bot.proto.Vertex;
 import com.protoalliance.vindiniumclient.bot.proto.astar.AStar;
 import com.protoalliance.vindiniumclient.bot.proto.astar.Path;
+import com.protoalliance.vindiniumclient.bot.proto.bloodthirstbot.MoveToTargetTask;
 import com.protoalliance.vindiniumclient.dto.GameState;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,12 +13,12 @@ import org.apache.logging.log4j.Logger;
 import java.util.Map;
 
 /**
- * Created by Matthew on 3/29/2015.
+ * Created by Joseph on 3/30/2015.
  */
-public class PathfindToClosestPubTask extends LeafTask {
-    private static final Logger logger = LogManager.getLogger(PathfindToClosestPubTask.class);
+public class PathfindToClosestMineTask extends LeafTask{
+    private static final Logger logger = LogManager.getLogger(MoveToTargetTask.class);
 
-    public PathfindToClosestPubTask(Blackboard bb) {
+    public PathfindToClosestMineTask(Blackboard bb) {
         super(bb);
     }
 
@@ -31,7 +32,7 @@ public class PathfindToClosestPubTask extends LeafTask {
 
     @Override
     public void start() {
-       // logger.info("Calculating Path");
+
     }
 
     @Override
@@ -49,18 +50,13 @@ public class PathfindToClosestPubTask extends LeafTask {
 
 
         AStar a = new AStar(bb.getGameState(), myVert, bb.getTarget());
-        long start = System.nanoTime();
         Path p = a.getPath();
-        long end = System.nanoTime();
-        logger.info("Time taken to pathfind in nanoseconds " + (end - start));
-
         if(p == null){
-          //  logger.info("There's no path!");
             control.finishWithFailure();
             return;
         }
         bb.setPath(p);
-       // logger.info("Path found is " + p);
+
         control.finishWithSuccess();
         return;
     }

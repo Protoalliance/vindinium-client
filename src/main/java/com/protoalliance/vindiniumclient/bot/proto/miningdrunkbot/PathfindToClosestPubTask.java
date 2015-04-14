@@ -1,4 +1,4 @@
-package com.protoalliance.vindiniumclient.bot.proto.drunkbot;
+package com.protoalliance.vindiniumclient.bot.proto.miningdrunkbot;
 
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.Blackboard;
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.LeafTask;
@@ -31,7 +31,7 @@ public class PathfindToClosestPubTask extends LeafTask {
 
     @Override
     public void start() {
-       // logger.info("Calculating Path");
+        //logger.info("Calculating Path");
     }
 
     @Override
@@ -49,18 +49,14 @@ public class PathfindToClosestPubTask extends LeafTask {
 
 
         AStar a = new AStar(bb.getGameState(), myVert, bb.getTarget());
-        long start = System.nanoTime();
         Path p = a.getPath();
-        long end = System.nanoTime();
-        logger.info("Time taken to pathfind in nanoseconds " + (end - start));
-
         if(p == null){
-          //  logger.info("There's no path!");
+            //logger.info("There's no path!");
             control.finishWithFailure();
             return;
         }
         bb.setPath(p);
-       // logger.info("Path found is " + p);
+        //logger.info("Path found is " + p);
         control.finishWithSuccess();
         return;
     }

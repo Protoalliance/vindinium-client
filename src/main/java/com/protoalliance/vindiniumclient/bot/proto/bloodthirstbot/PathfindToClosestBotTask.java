@@ -49,7 +49,11 @@ public class PathfindToClosestBotTask extends LeafTask {
 
 
         AStar a = new AStar(bb.getGameState(), myVert, bb.getTarget());
+
+        long start = System.nanoTime();
         Path p = a.getPath();
+        long end = System.nanoTime();
+        logger.info("Time taken to pathfind in nanoseconds " + (end - start));
         if(p == null){
             //logger.info("There's no path!");
             control.finishWithFailure();
