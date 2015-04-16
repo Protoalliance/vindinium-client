@@ -11,6 +11,7 @@ import com.protoalliance.vindiniumclient.dto.GameState;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -29,7 +30,7 @@ public class GetClosestPubIfNeededTask extends LeafTask {
     private static final int BOOZE_THRESHOLD =  20;
     //This sets the amount of life we want to have when we
     //leave the pub
-    private static final int SECONDARY_BOOZE_THRESHOLD = 80;
+    private static final int SECONDARY_BOOZE_THRESHOLD = 60;
     private ProtoGameState state;
     private Vertex target;
     public GetClosestPubIfNeededTask(Blackboard bb) {
@@ -56,7 +57,7 @@ public class GetClosestPubIfNeededTask extends LeafTask {
     @Override
     public void end() {
         if(target != null) {
-            //logger.info("Target pub at (" + target.getPosition().getX() + "," + target.getPosition().getY() + ")");
+            logger.info("Target pub at (" + target.getPosition().getX() + "," + target.getPosition().getY() + ")");
         }
     }
 
@@ -95,15 +96,16 @@ public class GetClosestPubIfNeededTask extends LeafTask {
                 control.finishWithSuccess();
                 return;
             }
-            //logger.info("We don't need booze yet!");
+            logger.info("We don't need booze yet!");
             control.finishWithFailure();
             return;
         }
 
-        //logger.info("We need booze and we will get it!");
+        logger.info("We need booze and we will get it!");
         Vertex target = null;
         int minDist = Integer.MAX_VALUE;
         Vertex cur = null;
+        Map<GameState.Position, GameState.Hero> heroMap = bb.getGameState().getHeroesByPosition();
         GameState.Position myPos = bb.getGameState().getMe().getPos();
         Vertex myVert = new Vertex(myPos, null);
         Manhattan man = new Manhattan(null);
@@ -117,6 +119,36 @@ public class GetClosestPubIfNeededTask extends LeafTask {
                 control.finishWithSuccess();
                 return;
             }
+            /**
+             * This is a really ugly block of code to check something at least somewhat
+             * complicated.  We check the adjacent vertices to the pub and if they are
+             * occupied we break so we can pick another pub.
+             */
+            boolean breakFlag = false;
+            List<Vertex> adjVert = p.getAdjacentVertices();
+            if(adjVert == null){
+                //If we're in here then there are for
+                //some reason no vertices adjacent
+                //to the pub.  So we just break
+                break;
+            }
+            for(Vertex v2 : adjVert){
+                GameState.Hero checkHero = heroMap.get(v2.getPosition());
+                if(checkHero != null &&
+                        checkHero.getPos().getX() != bb.getGameState().getMe().getPos().getX() &&
+                        checkHero.getPos().getX() != bb.getGameState().getMe().getPos().getX()){
+                    logger.info("There is a hero next to this pub his name is " + checkHero.getName());
+                    breakFlag = true;
+                    break;
+                }
+            }
+            if(breakFlag){
+                break;
+            }
+
+
+
+
             cur = new Vertex(pos, null);
             man.setGoalVertex(cur);
             int est = man.estimate(myVert);
@@ -125,11 +157,18 @@ public class GetClosestPubIfNeededTask extends LeafTask {
                 target = cur;
             }
         }
+        if(target == null){
+
+        }
+
+
         this.target = target;
         bb.setTarget(target);
         control.finishWithSuccess();
         return;
     }
+
+
 
     public Vertex checkForAdjacentPubs(){
         GameState.Position myPos = bb.getGameState().getMe().getPos();

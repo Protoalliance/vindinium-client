@@ -4,7 +4,8 @@ import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.Blackboard;
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.ParentTask;
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.Task;
 import com.protoalliance.vindiniumclient.bot.proto.bloodandgolddrunkbot.ChaseToDrinkSequence;
-
+import com.protoalliance.vindiniumclient.bot.proto.drunkbot.*;
+import com.protoalliance.vindiniumclient.bot.proto.drunkbot.RandomMovementTask;
 
 
 /**
@@ -34,6 +35,7 @@ public class DrinkOrMineSelector extends ParentTask{
         super(bb);
         control.subTasks.add(new ChaseToDrinkSequence(bb));
         control.subTasks.add(new ChaseToMineSequence(bb));
+        control.subTasks.add(new RandomMovementTask(bb));
     }
 
     /**

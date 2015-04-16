@@ -1,4 +1,4 @@
-package com.protoalliance.vindiniumclient.bot.proto.kronos;
+package com.protoalliance.vindiniumclient.bot.proto.miningdrunkbot;
 
 import com.protoalliance.vindiniumclient.bot.BotMove;
 import com.protoalliance.vindiniumclient.bot.BotUtils;
@@ -7,6 +7,7 @@ import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.LeafTask;
 import com.protoalliance.vindiniumclient.bot.proto.Pub;
 import com.protoalliance.vindiniumclient.bot.proto.Vertex;
 import com.protoalliance.vindiniumclient.bot.proto.astar.Path;
+import com.protoalliance.vindiniumclient.bot.proto.kronos.MoveToTargetTask;
 import com.protoalliance.vindiniumclient.dto.GameState;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

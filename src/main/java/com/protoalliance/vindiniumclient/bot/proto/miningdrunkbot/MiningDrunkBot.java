@@ -13,12 +13,12 @@ import org.apache.logging.log4j.Logger;
  */
 public class MiningDrunkBot implements ProtoBot{
     private Blackboard bb;
-    private AmITheKingSelector seq;
+    private DrinkOrMineSelector seq;
     private static final Logger logger = LogManager.getLogger(MiningDrunkBot.class);
 
     public MiningDrunkBot(){
         bb = new Blackboard();
-        seq = new AmITheKingSelector(bb);
+        seq = new DrinkOrMineSelector(bb);
     }
 
     @Override
@@ -26,7 +26,7 @@ public class MiningDrunkBot implements ProtoBot{
 
         if (seq.getController().finished() || !seq.getController().started()) {
             bb.setGameState(state);
-            seq = new AmITheKingSelector(bb);
+            seq = new DrinkOrMineSelector(bb);
             seq.getController().safeStart();
             bb.move = null;
         } else {
@@ -47,7 +47,7 @@ public class MiningDrunkBot implements ProtoBot{
                 seq.perform();
             }
             if(seq.getController().succeeded()){
-                seq = new AmITheKingSelector(bb);
+                seq = new DrinkOrMineSelector(bb);
                 seq.getController().safeStart();
             }
             if(seq.getController().failed()){
@@ -56,7 +56,7 @@ public class MiningDrunkBot implements ProtoBot{
             }
         }
 
-        //logger.info("We returned a move of " + bb.move);
+        logger.info("We returned a move of " + bb.move);
         return bb.move;
     }
 

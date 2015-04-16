@@ -14,10 +14,10 @@ import java.util.Map;
 /**
  * Created by Matthew on 3/29/2015.
  */
-public class PathfindToClosestPubNoBotsTask extends LeafTask {
-    private static final Logger logger = LogManager.getLogger(PathfindToClosestPubNoBotsTask.class);
+public class PathfindToClosestPubTask extends LeafTask {
+    private static final Logger logger = LogManager.getLogger(PathfindToClosestPubTask.class);
 
-    public PathfindToClosestPubNoBotsTask(Blackboard bb) {
+    public PathfindToClosestPubTask(Blackboard bb) {
         super(bb);
     }
 

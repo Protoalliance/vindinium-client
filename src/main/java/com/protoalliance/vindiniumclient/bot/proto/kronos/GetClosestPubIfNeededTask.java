@@ -126,9 +126,7 @@ public class GetClosestPubIfNeededTask extends LeafTask {
              * occupied we break so we can pick another pub.
              */
             boolean breakFlag = false;
-            Map<GameState.Position, Vertex> graph = bb.getGameState().getBoardGraph();
-            Vertex v = graph.get(pos);
-            List<Vertex> adjVert = v.getAdjacentVertices();
+            List<Vertex> adjVert = p.getAdjacentVertices();
             if(adjVert == null){
                 //If we're in here then there are for
                 //some reason no vertices adjacent
@@ -146,7 +144,7 @@ public class GetClosestPubIfNeededTask extends LeafTask {
                 }
             }
             if(breakFlag){
-                break;
+                continue;
             }
 
 
@@ -160,6 +158,8 @@ public class GetClosestPubIfNeededTask extends LeafTask {
                 target = cur;
             }
         }
+
+
         if(target == null){
 
         }

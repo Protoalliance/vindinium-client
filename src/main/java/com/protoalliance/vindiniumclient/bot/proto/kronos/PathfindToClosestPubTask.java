@@ -50,6 +50,9 @@ public class PathfindToClosestPubTask extends LeafTask {
 
         AStar a = new AStar(bb.getGameState(), myVert, bb.getTarget());
         Path p = a.getPath();
+
+
+
         if(p == null){
             //logger.info("There's no path!");
             control.finishWithFailure();
