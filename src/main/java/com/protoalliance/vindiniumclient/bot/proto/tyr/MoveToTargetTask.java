@@ -1,4 +1,4 @@
-package com.protoalliance.vindiniumclient.bot.proto.kronos;
+package com.protoalliance.vindiniumclient.bot.proto.tyr;
 
 import com.protoalliance.vindiniumclient.bot.BotMove;
 import com.protoalliance.vindiniumclient.bot.BotUtils;
@@ -32,20 +32,20 @@ public class MoveToTargetTask extends LeafTask {
 
     @Override
     public void start() {
-        logger.info("Setting next move.");
+       //logger.info("Setting next move.");
         this.path = bb.getPath();
         curPathIdx = 1;
     }
 
     @Override
     public void end() {
-        logger.info("Moving " + retMove);
+       // logger.info("Moving " + retMove);
     }
 
     /**
      * Basic function here is that we check to see if the hero,
      * or a hero is on the target position.  This method and the
-     * GetClosestPubTask don't take into account the actual identity
+     * GetPubTarget don't take into account the actual identity
      * of the bot.  If no hero is on the target, then we bail out from
      * the task since we need to go back and pathfind again.  Otherwise
      * we move to the next position on the path and increment the
@@ -55,6 +55,7 @@ public class MoveToTargetTask extends LeafTask {
      * the next target on the path is the curPathIdx, additionally data
      * is logged.
      */
+    @Override
     public void perform() {
 
         if(curPathIdx > path.getVertices().size() - 1){
@@ -69,13 +70,14 @@ public class MoveToTargetTask extends LeafTask {
         //necessary to start pathfinding all over again.  If it's
         //the first move on the path though it's not a problem.
         Vertex target = bb.getTarget();
+        boolean flag = false;
         if(curPathIdx == 0){
             //Do nothing
             //we haven't started
             //the path yet!
         }else{
             Vertex whereWeShouldBe = bb.getPath().getVertices().get(curPathIdx - 1);
-            if(whereWeShouldBe.getPosition().getY() == bb.getGameState().getMe().getPos().getY() && whereWeShouldBe.getPosition().getX() == bb.getGameState().getMe().getPos().getX()){
+            if(whereWeShouldBe.getPosition().getY() == bb.getGameState().getMe().getPos().getY() && whereWeShouldBe.getPosition().getY() == bb.getGameState().getMe().getPos().getY()){
                 //Do nothing since we're where we should be
             }else{
                 //We finish with failure since we
@@ -84,13 +86,13 @@ public class MoveToTargetTask extends LeafTask {
                 control.finishWithFailure();
                 return;
             }
-
         }
 
         //If we're here we need to figure out where to move based on
         //current position and the next path vertex.
         retMove = BotUtils.directionTowards(bb.getGameState().getMe().getPos(), path.getVertices().get(curPathIdx).getPosition());
         //Hopefully this works and we target the correct direction, if not we're screwed.
+        //logger.info("Move direction " + retMove + " target vertex (" + target.getPosition().getX() + "," + target.getPosition().getY() + ")");
         bb.move = retMove;
         curPathIdx++;
         control.finishWithSuccess();

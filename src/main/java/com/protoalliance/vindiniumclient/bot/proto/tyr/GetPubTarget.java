@@ -1,4 +1,4 @@
-package com.protoalliance.vindiniumclient.bot.proto.kronos;
+package com.protoalliance.vindiniumclient.bot.proto.tyr;
 
 import com.protoalliance.vindiniumclient.bot.BotMove;
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.Blackboard;
@@ -11,7 +11,6 @@ import com.protoalliance.vindiniumclient.dto.GameState;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,17 +23,17 @@ import java.util.Map;
  *
  * Created by Matthew on 3/29/2015.
  */
-public class GetClosestPubIfNeededTask extends LeafTask {
-    private static final Logger logger = LogManager.getLogger(GetClosestPubIfNeededTask.class);
+public class GetPubTarget extends LeafTask {
+    private static final Logger logger = LogManager.getLogger(GetPubTarget.class);
     //This sets the life amount we have when we start going
     //towards the pub.
-    private static final int BOOZE_THRESHOLD =  30;
+    private static final int BOOZE_THRESHOLD =  20;
     //This sets the amount of life we want to have when we
     //leave the pub
     private static final int SECONDARY_BOOZE_THRESHOLD = 80;
     private ProtoGameState state;
     private Vertex target;
-    public GetClosestPubIfNeededTask(Blackboard bb) {
+    public GetPubTarget(Blackboard bb) {
         super(bb);
     }
 
@@ -76,37 +75,13 @@ public class GetClosestPubIfNeededTask extends LeafTask {
      */
     @Override
     public void perform() {
-        if(bb.getGameState().getMe().getGold() < 2){
-            //We first check to see if we have money
-            //for booze!
-            //If we don't we failed.
-            //logger.info("We don't have any cash!");
-            control.finishWithFailure();
-            return;
-        }
-        //An additional check to see if we actually need booze
-        //for health, if not we might as well go on a killing
-        //spree.
-        if(bb.getGameState().getMe().getLife() > BOOZE_THRESHOLD){
-            Vertex tar = checkForAdjacentPubs();
-            if(tar != null && bb.getGameState().getMe().getLife() < SECONDARY_BOOZE_THRESHOLD){
-                //Basically we set everything in checkForAdjacentPubs, and if
-                //our life is still below 100 after our first visit and we
-                //have the cash, we need to visit again.
-                bb.setTarget(tar);
-                control.finishWithSuccess();
-                return;
-            }
-            //logger.info("We don't need booze yet!");
-            control.finishWithFailure();
-            return;
-        }
-
         //logger.info("We need booze and we will get it!");
         Vertex target = null;
         int minDist = Integer.MAX_VALUE;
         Vertex cur = null;
         Map<GameState.Position, GameState.Hero> heroMap = bb.getGameState().getHeroesByPosition();
+
+
         GameState.Position myPos = bb.getGameState().getMe().getPos();
         Vertex myVert = new Vertex(myPos, null);
         Manhattan man = new Manhattan(null);
@@ -120,14 +95,14 @@ public class GetClosestPubIfNeededTask extends LeafTask {
                 control.finishWithSuccess();
                 return;
             }
+
             /**
              * This is a really ugly block of code to check something at least somewhat
              * complicated.  We check the adjacent vertices to the pub and if they are
              * occupied we break so we can pick another pub.
              */
             boolean breakFlag = false;
-            Map<GameState.Position, Vertex> graph = bb.getGameState().getBoardGraph();
-            Vertex v = graph.get(pos);
+            Vertex v = new Vertex(p.getPosition(), null);
             List<Vertex> adjVert = v.getAdjacentVertices();
             if(adjVert == null){
                 //If we're in here then there are for
@@ -151,7 +126,6 @@ public class GetClosestPubIfNeededTask extends LeafTask {
 
 
 
-
             cur = new Vertex(pos, null);
             man.setGoalVertex(cur);
             int est = man.estimate(myVert);
@@ -160,8 +134,13 @@ public class GetClosestPubIfNeededTask extends LeafTask {
                 target = cur;
             }
         }
-        if(target == null){
 
+        //If all of the pubs are occupied just stay still
+        //and wait until one is unoccupied.
+        if(target == null){
+            bb.move = BotMove.STAY;
+            control.finishWithSuccess();
+            return;
         }
 
 
@@ -169,22 +148,5 @@ public class GetClosestPubIfNeededTask extends LeafTask {
         bb.setTarget(target);
         control.finishWithSuccess();
         return;
-    }
-
-
-
-    public Vertex checkForAdjacentPubs(){
-        GameState.Position myPos = bb.getGameState().getMe().getPos();
-        Vertex myVert = bb.getGameState().getBoardGraph().get(myPos);
-        Map<GameState.Position, Pub> pubMap = bb.getGameState().getPubs();
-
-        for(Vertex neighbor : myVert.getAdjacentVertices()){
-            if(pubMap.get(neighbor.getPosition()) != null){
-                Vertex targetVertex = new Vertex(neighbor.getPosition(), null);
-                this.target = targetVertex;
-                return targetVertex;
-            }
-        }
-        return null;
     }
 }

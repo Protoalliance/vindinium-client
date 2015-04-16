@@ -6,19 +6,23 @@ import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.Blackboard;
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.LeafTask;
 import com.protoalliance.vindiniumclient.bot.proto.Vertex;
 import com.protoalliance.vindiniumclient.bot.proto.astar.Path;
+import com.protoalliance.vindiniumclient.dto.GameState;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.List;
+import java.util.Map;
+
 /**
- * Created by Matthew on 3/29/2015.
+ * Created by Matthew on 4/15/2015.
  */
-public class MoveToTargetTask extends LeafTask {
+public class MoveToTargetPubTask extends LeafTask {
     private BotMove retMove;
     private Path path;
     private int curPathIdx;
     private static final Logger logger = LogManager.getLogger(MoveToTargetTask.class);
 
-    public MoveToTargetTask(Blackboard bb) {
+    public MoveToTargetPubTask(Blackboard bb) {
         super(bb);
     }
 
@@ -84,6 +88,24 @@ public class MoveToTargetTask extends LeafTask {
                 control.finishWithFailure();
                 return;
             }
+            //A check to make sure that there is no bot
+            //near the pub we are seeking
+            Map<GameState.Position, GameState.Hero> heroMap = bb.getGameState().getHeroesByPosition();
+            Map<GameState.Position, Vertex> graph = bb.getGameState().getBoardGraph();
+            Vertex v = graph.get(bb.getTarget().getPosition());
+            List<Vertex> adjVert = v.getAdjacentVertices();
+            for(Vertex v2 : adjVert){
+                GameState.Hero checkHero = heroMap.get(v2.getPosition());
+                if(checkHero != null &&
+                        checkHero.getPos().getX() != bb.getGameState().getMe().getPos().getX() &&
+                        checkHero.getPos().getX() != bb.getGameState().getMe().getPos().getX()){
+                    logger.info("A hero moved next to the pub we targeted his name is " + checkHero.getName());
+                    control.finishWithFailure();
+                    return;
+                }
+            }
+
+
 
         }
 

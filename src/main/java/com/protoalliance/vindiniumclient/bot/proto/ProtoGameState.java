@@ -69,6 +69,29 @@ public class ProtoGameState {
                 } else if (tileValue.equals("[]")) {
                     Pub pub = new Pub(pos);
                     this.pubs.put(pos, pub);
+                    //This is an attempt to add adjacent vertices to the pubs
+                    //Possibly useful for the mines too.
+                    for (int xDelta = -1; xDelta <= 1; xDelta += 2) {
+                        int currentX = v.getPosition().getX();
+                        int newX = currentX + xDelta;
+                        if(newX >= 0 && newX < board.getSize()) {
+                            GameState.Position adjacentPos = new GameState.Position(newX, v.getPosition().getY());
+                            Vertex adjacentVertex = this.boardGraph.get(adjacentPos);
+                            if(adjacentVertex != null)
+                                v.getAdjacentVertices().add(adjacentVertex);
+                        }
+                    }
+                    for (int yDelta = -1; yDelta <= 1; yDelta += 2) {
+                        int currentY = v.getPosition().getY();
+                        int newY = currentY + yDelta;
+                        if(newY >= 0 && newY < board.getSize()) {
+                            GameState.Position adjacentPos = new GameState.Position( v.getPosition().getX(), newY);
+                            Vertex adjacentVertex = this.boardGraph.get(adjacentPos);
+                            if(adjacentVertex != null)
+                                v.getAdjacentVertices().add(adjacentVertex);
+                        }
+                    }
+
                 }
             }
         }

@@ -1,20 +1,14 @@
-package com.protoalliance.vindiniumclient.bot.proto.kronos;
+package com.protoalliance.vindiniumclient.bot.proto.tyr;
 
-import com.protoalliance.vindiniumclient.bot.BotMove;
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.Blackboard;
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.LeafTask;
 import com.protoalliance.vindiniumclient.bot.proto.ProtoGameState;
 import com.protoalliance.vindiniumclient.bot.proto.Pub;
 import com.protoalliance.vindiniumclient.bot.proto.Vertex;
-import com.protoalliance.vindiniumclient.bot.proto.astar.Manhattan;
 import com.protoalliance.vindiniumclient.dto.GameState;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
 
 /**
  * This version of the behavior is a bit more advanced,
@@ -24,17 +18,17 @@ import java.util.Map;
  *
  * Created by Matthew on 3/29/2015.
  */
-public class GetClosestPubIfNeededTask extends LeafTask {
-    private static final Logger logger = LogManager.getLogger(GetClosestPubIfNeededTask.class);
+public class DoINeedHealthTask extends LeafTask {
+    private static final Logger logger = LogManager.getLogger(GetPubTarget.class);
     //This sets the life amount we have when we start going
     //towards the pub.
-    private static final int BOOZE_THRESHOLD =  30;
+    private static final int BOOZE_THRESHOLD =  20;
     //This sets the amount of life we want to have when we
     //leave the pub
     private static final int SECONDARY_BOOZE_THRESHOLD = 80;
     private ProtoGameState state;
     private Vertex target;
-    public GetClosestPubIfNeededTask(Blackboard bb) {
+    public DoINeedHealthTask(Blackboard bb) {
         super(bb);
     }
 
@@ -89,89 +83,23 @@ public class GetClosestPubIfNeededTask extends LeafTask {
         //spree.
         if(bb.getGameState().getMe().getLife() > BOOZE_THRESHOLD){
             Vertex tar = checkForAdjacentPubs();
-            if(tar != null && bb.getGameState().getMe().getLife() < SECONDARY_BOOZE_THRESHOLD){
+            if(tar != null && bb.getGameState().getMe().getLife() < SECONDARY_BOOZE_THRESHOLD) {
                 //Basically we set everything in checkForAdjacentPubs, and if
                 //our life is still below 100 after our first visit and we
                 //have the cash, we need to visit again.
-                bb.setTarget(tar);
+                //bb.setTarget(tar);
                 control.finishWithSuccess();
                 return;
             }
-            //logger.info("We don't need booze yet!");
+            //If we're here then our life was higher than the booze
+            //threshold and we don't need to hit the pub again.
             control.finishWithFailure();
             return;
         }
-
-        //logger.info("We need booze and we will get it!");
-        Vertex target = null;
-        int minDist = Integer.MAX_VALUE;
-        Vertex cur = null;
-        Map<GameState.Position, GameState.Hero> heroMap = bb.getGameState().getHeroesByPosition();
-        GameState.Position myPos = bb.getGameState().getMe().getPos();
-        Vertex myVert = new Vertex(myPos, null);
-        Manhattan man = new Manhattan(null);
-        Map<GameState.Position, Pub> pubMap = bb.getGameState().getPubs();
-        for(GameState.Position pos : pubMap.keySet()){
-            Pub p = pubMap.get(pos);
-            if(p.getPosition().getX() == myPos.getX() && p.getPosition().getY() == myPos.getY()){
-                //This really shouldn't happen.
-                //logger.info("We are already at the pub!");
-                bb.move = BotMove.STAY;
-                control.finishWithSuccess();
-                return;
-            }
-            /**
-             * This is a really ugly block of code to check something at least somewhat
-             * complicated.  We check the adjacent vertices to the pub and if they are
-             * occupied we break so we can pick another pub.
-             */
-            boolean breakFlag = false;
-            Map<GameState.Position, Vertex> graph = bb.getGameState().getBoardGraph();
-            Vertex v = graph.get(pos);
-            List<Vertex> adjVert = v.getAdjacentVertices();
-            if(adjVert == null){
-                //If we're in here then there are for
-                //some reason no vertices adjacent
-                //to the pub.  So we just break
-                break;
-            }
-            for(Vertex v2 : adjVert){
-                GameState.Hero checkHero = heroMap.get(v2.getPosition());
-                if(checkHero != null &&
-                        checkHero.getPos().getX() != bb.getGameState().getMe().getPos().getX() &&
-                        checkHero.getPos().getX() != bb.getGameState().getMe().getPos().getX()){
-                    logger.info("There is a hero next to this pub his name is " + checkHero.getName());
-                    breakFlag = true;
-                    break;
-                }
-            }
-            if(breakFlag){
-                break;
-            }
-
-
-
-
-            cur = new Vertex(pos, null);
-            man.setGoalVertex(cur);
-            int est = man.estimate(myVert);
-            if(est < minDist){
-                minDist = est;
-                target = cur;
-            }
-        }
-        if(target == null){
-
-        }
-
-
-        this.target = target;
-        bb.setTarget(target);
+        //logger.info("We don't need booze yet!");
         control.finishWithSuccess();
         return;
     }
-
-
 
     public Vertex checkForAdjacentPubs(){
         GameState.Position myPos = bb.getGameState().getMe().getPos();

@@ -1,7 +1,11 @@
-package com.protoalliance.vindiniumclient.bot.proto.kronos;
+package com.protoalliance.vindiniumclient.bot.proto.tyr;
 
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.Blackboard;
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.ParentTask;
+import com.protoalliance.vindiniumclient.bot.proto.bloodandgolddrunkbot.GetClosestPubIfNeededTask;
+import com.protoalliance.vindiniumclient.bot.proto.bloodandgolddrunkbot.PathfindToClosestPubTask;
+import com.protoalliance.vindiniumclient.bot.proto.bloodandgolddrunkbot.RunUntilFailureDecorator;
+
 
 /**
  * Created by Matthew on 3/29/2015.
@@ -10,9 +14,10 @@ public class ChaseToDrinkSequence extends ParentTask {
 
     public ChaseToDrinkSequence(Blackboard bb) {
         super(bb);
-        control.subTasks.add(new GetClosestPubIfNeededTask(bb));
+        control.subTasks.add(new GetPubTarget(bb));
         control.subTasks.add(new PathfindToClosestPubTask(bb));
         control.subTasks.add(new RunUntilFailureDecorator(bb, new MoveToTargetPubTask(bb)));
+
     }
 
     @Override

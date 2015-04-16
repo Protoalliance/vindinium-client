@@ -1,27 +1,23 @@
-package com.protoalliance.vindiniumclient.bot.proto.kronos;
+package com.protoalliance.vindiniumclient.bot.proto.tyr;
 
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.Blackboard;
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.LeafTask;
 import com.protoalliance.vindiniumclient.bot.proto.ProtoGameState;
-import com.protoalliance.vindiniumclient.bot.proto.Pub;
-import com.protoalliance.vindiniumclient.bot.proto.Vertex;
 import com.protoalliance.vindiniumclient.dto.GameState;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.List;
 import java.util.Map;
 
 
 /**
  * Created by Matthew on 3/29/2015.
  */
-public class ToKillOrNotToKillTask extends LeafTask {
-    private static final Logger logger = LogManager.getLogger(ToKillOrNotToKillTask.class);
-    public static final double MINE_THRESHOLD = 0.25;
+public class GetBotWithMostMinesTask extends LeafTask {
+    private static final Logger logger = LogManager.getLogger(GetBotWithMostMinesTask.class);
     private ProtoGameState state;
     private GameState.Hero targetHero;
-    public ToKillOrNotToKillTask(Blackboard bb) {
+    public GetBotWithMostMinesTask(Blackboard bb) {
         super(bb);
     }
 
@@ -82,26 +78,6 @@ public class ToKillOrNotToKillTask extends LeafTask {
                 maxMineCount = tar.getMineCount();
             }
         }
-        int numMines = bb.getGameState().getMines().size();
-        double ratio = ((double) finTar.getMineCount()) / ((double) numMines);
-        if(ratio < MINE_THRESHOLD){
-            logger.info("Mine ratio is " + ratio);
-            control.finishWithFailure();
-            return;
-        }
-        Map<GameState.Position, Pub> pubMap = bb.getGameState().getPubs();
-        Vertex heroVert = bb.getGameState().getBoardGraph().get(finTar.getPos());
-        List<Vertex> adjVert = heroVert.getAdjacentVertices();
-        for(GameState.Position pubPos : pubMap.keySet()){
-            for(Vertex v : adjVert){
-                if(v.getPosition().getX() == pubPos.getX() && v.getPosition().getY() == pubPos.getX()){
-                    logger.info("hero is right next to a pub!");
-                    control.finishWithFailure();
-                    return;
-                }
-            }
-        }
-
         bb.setTargetHero(finTar);
         targetHero = finTar;
         String tarName = finTar.getName();

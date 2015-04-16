@@ -1,18 +1,17 @@
-package com.protoalliance.vindiniumclient.bot.proto.kronos;
+package com.protoalliance.vindiniumclient.bot.proto.tyr;
 
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.Blackboard;
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.ParentTask;
 
 /**
- * Created by Matthew on 3/29/2015.
+ * Created by Matthew on 4/15/2015.
  */
-public class ChaseToDrinkSequence extends ParentTask {
+public class AmILowOnHealthSequence extends ParentTask {
 
-    public ChaseToDrinkSequence(Blackboard bb) {
+    public AmILowOnHealthSequence(Blackboard bb) {
         super(bb);
-        control.subTasks.add(new GetClosestPubIfNeededTask(bb));
-        control.subTasks.add(new PathfindToClosestPubTask(bb));
-        control.subTasks.add(new RunUntilFailureDecorator(bb, new MoveToTargetPubTask(bb)));
+        control.subTasks.add(new DoINeedHealthTask(bb));
+        control.subTasks.add(new RunUntilSuccessDecorator(bb, new ChaseToDrinkSequence(bb)));
     }
 
     @Override
