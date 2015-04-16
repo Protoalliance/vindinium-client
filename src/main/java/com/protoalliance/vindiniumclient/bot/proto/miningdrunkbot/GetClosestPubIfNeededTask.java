@@ -143,7 +143,7 @@ public class GetClosestPubIfNeededTask extends LeafTask {
                 }
             }
             if(breakFlag){
-                break;
+                continue;
             }
 
 

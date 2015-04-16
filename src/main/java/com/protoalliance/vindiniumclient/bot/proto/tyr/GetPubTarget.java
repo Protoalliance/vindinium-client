@@ -102,8 +102,7 @@ public class GetPubTarget extends LeafTask {
              * occupied we break so we can pick another pub.
              */
             boolean breakFlag = false;
-            Vertex v = new Vertex(p.getPosition(), null);
-            List<Vertex> adjVert = v.getAdjacentVertices();
+            List<Vertex> adjVert = p.getAdjacentVertices();
             if(adjVert == null){
                 //If we're in here then there are for
                 //some reason no vertices adjacent
@@ -121,7 +120,7 @@ public class GetPubTarget extends LeafTask {
                 }
             }
             if(breakFlag){
-                break;
+                continue;
             }
 
 
