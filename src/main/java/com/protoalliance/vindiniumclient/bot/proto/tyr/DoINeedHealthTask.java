@@ -22,7 +22,7 @@ public class DoINeedHealthTask extends LeafTask {
     private static final Logger logger = LogManager.getLogger(GetPubTarget.class);
     //This sets the life amount we have when we start going
     //towards the pub.
-    private static final int BOOZE_THRESHOLD =  30;
+    private static final int BOOZE_THRESHOLD =  25;
     //This sets the amount of life we want to have when we
     //leave the pub
     private static final int SECONDARY_BOOZE_THRESHOLD = 80;

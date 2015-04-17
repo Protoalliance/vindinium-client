@@ -11,6 +11,7 @@ import com.protoalliance.vindiniumclient.dto.GameState;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -88,19 +89,34 @@ public class MoveToTargetHeroTask extends LeafTask {
             return;
         }
 
-        //A block to check to see if the target has moved next to a pub.
         Map<GameState.Position, Pub> pubMap = bb.getGameState().getPubs();
-        Vertex heroVert = bb.getGameState().getBoardGraph().get(bb.targetHero.getPos());
-        List<Vertex> adjVert = heroVert.getAdjacentVertices();
-        for(GameState.Position pubPos : pubMap.keySet()){
+        Map<GameState.Position, Pub> heroPos = bb.getGameState().getPubs();
+        for(Pub pub : pubMap.values()){
+            LinkedList<Vertex> adjVert = pub.getAdjacentVertices();
             for(Vertex v : adjVert){
-                if(v.getPosition().getX() == pubPos.getX() && v.getPosition().getY() == pubPos.getX()){
+                heroPos.get(v.getPosition());
+                if(heroPos.get(v.getPosition()) != null){
                     logger.info("hero is right next to a pub!");
                     control.finishWithFailure();
-                    return;
+                    break;
                 }
             }
+            break;
         }
+
+//        //A block to check to see if the target has moved next to a pub.
+//        Map<GameState.Position, Pub> pubMap = bb.getGameState().getPubs();
+//        Vertex heroVert = bb.getGameState().getBoardGraph().get(bb.targetHero.getPos());
+//        List<Vertex> adjVert = heroVert.getAdjacentVertices();
+//        for(GameState.Position pubPos : pubMap.keySet()){
+//            for(Vertex v : adjVert){
+//                if(v.getPosition().getX() == pubPos.getX() && v.getPosition().getY() == pubPos.getX()){
+//                    logger.info("hero is right next to a pub!");
+//                    control.finishWithFailure();
+//                    return;
+//                }
+//            }
+//        }
 
 
 

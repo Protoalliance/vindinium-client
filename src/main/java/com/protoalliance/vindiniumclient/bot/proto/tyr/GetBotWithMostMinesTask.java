@@ -9,6 +9,7 @@ import com.protoalliance.vindiniumclient.dto.GameState;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +18,7 @@ import java.util.Map;
  * Created by Matthew on 3/29/2015.
  */
 public class GetBotWithMostMinesTask extends LeafTask {
-    private static final double MINE_THRESHOLD = 0.5;
+    private static final double MINE_THRESHOLD = 0.4;
     private static final Logger logger = LogManager.getLogger(GetBotWithMostMinesTask.class);
     private ProtoGameState state;
     private GameState.Hero targetHero;
@@ -80,11 +81,11 @@ public class GetBotWithMostMinesTask extends LeafTask {
 
             boolean continueFlag = false;
             Map<GameState.Position, Pub> pubMap = bb.getGameState().getPubs();
-            Vertex heroVert = bb.getGameState().getBoardGraph().get(tar.getPos());
-            List<Vertex> adjVert = heroVert.getAdjacentVertices();
-            for(GameState.Position pubPos : pubMap.keySet()){
+            for(Pub pub : pubMap.values()){
+                LinkedList<Vertex> adjVert = pub.getAdjacentVertices();
                 for(Vertex v : adjVert){
-                    if(v.getPosition().getX() == pubPos.getX() && v.getPosition().getY() == pubPos.getX()){
+                    heroPos.get(v.getPosition());
+                    if(heroPos.get(v.getPosition()) != null){
                         logger.info("hero is right next to a pub!");
                         continueFlag = true;
                         break;
@@ -104,6 +105,15 @@ public class GetBotWithMostMinesTask extends LeafTask {
             }
 
         }
+
+        //If there's no good target we just fail
+        if(finTar == null){
+            control.finishWithFailure();
+            return;
+        }
+
+
+
         int numMines = bb.getGameState().getMines().size();
         double ratio = ((double) finTar.getMineCount()) / ((double) numMines);
         if(ratio < MINE_THRESHOLD){
@@ -112,13 +122,7 @@ public class GetBotWithMostMinesTask extends LeafTask {
             return;
         }
 
-        //If there's no good target we just set
-        //the last target from the loop to be our
-        //target
-        if(finTar == null){
-            control.finishWithFailure();
-            return;
-        }
+
 
         bb.setTargetHero(finTar);
         targetHero = finTar;

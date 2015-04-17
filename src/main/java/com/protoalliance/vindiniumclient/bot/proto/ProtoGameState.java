@@ -77,7 +77,7 @@ public class ProtoGameState {
                         int newX = currentX + xDelta;
                         if(newX >= 0 && newX < board.getSize()) {
                             GameState.Position adjacentPos = new GameState.Position(newX, v.getPosition().getY());
-                            Vertex adjacentVertex = this.boardGraph.get(adjacentPos);
+                            Vertex adjacentVertex = new Vertex(adjacentPos, null);
                             if(adjacentVertex != null)
                                 vertList.add(adjacentVertex);
                         }
@@ -87,7 +87,7 @@ public class ProtoGameState {
                         int newY = currentY + yDelta;
                         if(newY >= 0 && newY < board.getSize()) {
                             GameState.Position adjacentPos = new GameState.Position( v.getPosition().getX(), newY);
-                            Vertex adjacentVertex = this.boardGraph.get(adjacentPos);
+                            Vertex adjacentVertex = new Vertex(adjacentPos, null);
                             if(adjacentVertex != null)
                                 vertList.add(adjacentVertex);
                         }
