@@ -16,7 +16,6 @@ public class ChaseToDrinkSequence extends ParentTask {
 
     public ChaseToDrinkSequence(Blackboard bb) {
         super(bb);
-
         control.subTasks.add(new GetClosestPubIfNeededTask(bb));
         control.subTasks.add(new PathfindToClosestPubTask(bb));
         control.subTasks.add(new RunUntilFailureDecorator(bb, new MoveToTargetPubTask(bb)));

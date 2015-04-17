@@ -84,6 +84,12 @@ public class GetClosestPubIfNeededTask extends LeafTask {
             control.finishWithFailure();
             return;
         }
+//        if(bb.getFailedCount() > 3){
+//            //We've already failed a large
+//            //number of times
+//            bb.setFailedCount(0);
+//        }
+
         //An additional check to see if we actually need booze
         //for health, if not we might as well go on a killing
         //spree.
@@ -110,9 +116,11 @@ public class GetClosestPubIfNeededTask extends LeafTask {
         GameState.Position myPos = bb.getGameState().getMe().getPos();
         Vertex myVert = new Vertex(myPos, null);
         Manhattan man = new Manhattan(null);
+        Pub defaultTarget = null;
         Map<GameState.Position, Pub> pubMap = bb.getGameState().getPubs();
         for(GameState.Position pos : pubMap.keySet()){
             Pub p = pubMap.get(pos);
+            defaultTarget = p;
             if(p.getPosition().getX() == myPos.getX() && p.getPosition().getY() == myPos.getY()){
                 //This really shouldn't happen.
                 //logger.info("We are already at the pub!");
@@ -161,7 +169,11 @@ public class GetClosestPubIfNeededTask extends LeafTask {
 
 
         if(target == null){
-
+            Vertex def = new Vertex(defaultTarget.getPosition(), null);
+            //logger.info("setting default target pub");
+            bb.setTarget(def);
+            control.finishWithSuccess();
+            return;
         }
 
 

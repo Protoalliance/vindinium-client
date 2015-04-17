@@ -39,6 +39,7 @@ import com.protoalliance.vindiniumclient.bot.proto.drunkbot.RandomMovementTask;
 public class MainLogicSelector extends ParentTask {
     public MainLogicSelector(Blackboard bb) {
         super(bb);
+        //bb.setFailedCount(0);
         control.subTasks.add(new ChaseToDrinkSequence(bb));
         control.subTasks.add(new ChaseToKillForGoldSequence(bb));
         control.subTasks.add(new ChaseToMineSequence(bb));

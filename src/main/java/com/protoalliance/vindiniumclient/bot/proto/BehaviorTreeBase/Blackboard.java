@@ -19,10 +19,12 @@ public class Blackboard {
     public ProtoGameState state;
     public GameState.Hero targetHero;
     public LinkedList<Pub> checkedPubList;
+    public int fc;
 
     public Blackboard(){
         //null constructor since we probably won't want anything here yet.
         checkedPubList = new LinkedList<Pub>();
+        fc = 0;
     }
 
     public void setTargetHero(GameState.Hero hero){
@@ -62,6 +64,14 @@ public class Blackboard {
 
     public LinkedList<Pub>  getCheckedPubList(){
         return checkedPubList;
+    }
+
+    public void setFailedCount(int fc){
+        this.fc = fc;
+    }
+
+    public int getFailedCount(){
+        return fc;
     }
 
 }

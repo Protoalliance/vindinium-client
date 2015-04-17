@@ -37,7 +37,7 @@ public class MoveToTargetHeroTask extends LeafTask {
 
     @Override
     public void start() {
-       // logger.info("Setting next move.");
+       //logger.info("Setting hero target.");
         this.path = bb.getPath();
         curPathIdx = 1;
     }

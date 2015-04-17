@@ -31,7 +31,7 @@ public class GetClosestMineTask extends LeafTask{
 
     @Override
     public void start() {
-
+        //logger.info("Setting Mine target.");
     }
 
     @Override

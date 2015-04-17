@@ -25,6 +25,7 @@ public class MoveToTargetPubTask extends LeafTask {
 
     public MoveToTargetPubTask(Blackboard bb) {
         super(bb);
+
     }
 
     @Override
@@ -37,14 +38,14 @@ public class MoveToTargetPubTask extends LeafTask {
 
     @Override
     public void start() {
-        //logger.info("Setting next move.");
+        //logger.info("Setting pub target.");
         this.path = bb.getPath();
         curPathIdx = 1;
     }
 
     @Override
     public void end() {
-        logger.info("Moving " + retMove);
+        //logger.info("Moving " + retMove);
     }
 
     /**
@@ -99,7 +100,16 @@ public class MoveToTargetPubTask extends LeafTask {
                 if(checkHero != null &&
                         checkHero.getPos().getX() != bb.getGameState().getMe().getPos().getX() &&
                         checkHero.getPos().getX() != bb.getGameState().getMe().getPos().getX()){
+                    if(bb.getFailedCount() > 3){
+                        bb.setFailedCount(0);
+                        break;
+                        //At this point we just need to go to the pub.
+                    }
+
                     //logger.info("A hero moved next to the pub we targeted his name is " + checkHero.getName());
+                    int fc = bb.getFailedCount();
+                    bb.setFailedCount(++fc);
+                    //logger.info("failure count is " + bb.getFailedCount());
                     control.finishWithFailure();
                     return;
                 }

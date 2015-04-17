@@ -1,5 +1,6 @@
 package com.protoalliance.vindiniumclient.bot.proto.kronos;
 
+import com.protoalliance.vindiniumclient.bot.BotMove;
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.Blackboard;
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.LeafTask;
 import com.protoalliance.vindiniumclient.bot.proto.ProtoGameState;
@@ -106,6 +107,12 @@ public class ToKillOrNotToKillTask extends LeafTask {
         if(ratio < MINE_THRESHOLD){
            // logger.info("Mine ratio is " + ratio);
             control.finishWithFailure();
+            return;
+        }
+
+        if(finTar == null){
+            bb.move = BotMove.STAY;
+            control.finishWithSuccess();
             return;
         }
 
