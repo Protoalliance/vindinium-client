@@ -77,7 +77,7 @@ public class ToKillOrNotToKillTask extends LeafTask {
 
             boolean continueFlag = false;
             Map<GameState.Position, Pub> pubMap = bb.getGameState().getPubs();
-            Vertex heroVert = bb.getGameState().getBoardGraph().get(finTar.getPos());
+            Vertex heroVert = bb.getGameState().getBoardGraph().get(tar.getPos());
             List<Vertex> adjVert = heroVert.getAdjacentVertices();
             for(GameState.Position pubPos : pubMap.keySet()){
                 for(Vertex v : adjVert){
