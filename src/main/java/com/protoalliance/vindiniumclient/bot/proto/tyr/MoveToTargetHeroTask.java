@@ -4,10 +4,15 @@ import com.protoalliance.vindiniumclient.bot.BotMove;
 import com.protoalliance.vindiniumclient.bot.BotUtils;
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.Blackboard;
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.LeafTask;
+import com.protoalliance.vindiniumclient.bot.proto.Pub;
 import com.protoalliance.vindiniumclient.bot.proto.Vertex;
 import com.protoalliance.vindiniumclient.bot.proto.astar.Path;
+import com.protoalliance.vindiniumclient.dto.GameState;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Matthew on 3/29/2015.
@@ -82,6 +87,23 @@ public class MoveToTargetHeroTask extends LeafTask {
             control.finishWithFailure();
             return;
         }
+
+        //A block to check to see if the target has moved next to a pub.
+        Map<GameState.Position, Pub> pubMap = bb.getGameState().getPubs();
+        Vertex heroVert = bb.getGameState().getBoardGraph().get(bb.targetHero.getPos());
+        List<Vertex> adjVert = heroVert.getAdjacentVertices();
+        for(GameState.Position pubPos : pubMap.keySet()){
+            for(Vertex v : adjVert){
+                if(v.getPosition().getX() == pubPos.getX() && v.getPosition().getY() == pubPos.getX()){
+                    logger.info("hero is right next to a pub!");
+                    control.finishWithFailure();
+                    return;
+                }
+            }
+        }
+
+
+
         //If we're here we need to figure out where to move based on
         //current position and the next path vertex.
         retMove = BotUtils.directionTowards(bb.getGameState().getMe().getPos(), path.getVertices().get(curPathIdx).getPosition());

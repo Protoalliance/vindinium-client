@@ -2,7 +2,6 @@ package com.protoalliance.vindiniumclient.bot.proto.tyr;
 
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.Blackboard;
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.LeafTask;
-import com.protoalliance.vindiniumclient.bot.proto.Pub;
 import com.protoalliance.vindiniumclient.bot.proto.Vertex;
 import com.protoalliance.vindiniumclient.bot.proto.astar.AStar;
 import com.protoalliance.vindiniumclient.bot.proto.astar.Path;
@@ -10,16 +9,15 @@ import com.protoalliance.vindiniumclient.dto.GameState;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.LinkedList;
 import java.util.Map;
 
 /**
- * Created by Matthew on 3/29/2015.
+ * Created by Joseph on 3/30/2015.
  */
-public class PathfindToClosestPubTask extends LeafTask {
-    private static final Logger logger = LogManager.getLogger(PathfindToClosestPubTask.class);
+public class PathfindToClosestMineTask extends LeafTask{
+    private static final Logger logger = LogManager.getLogger(PathfindToClosestMineTask.class);
 
-    public PathfindToClosestPubTask(Blackboard bb) {
+    public PathfindToClosestMineTask(Blackboard bb) {
         super(bb);
     }
 
@@ -33,7 +31,7 @@ public class PathfindToClosestPubTask extends LeafTask {
 
     @Override
     public void start() {
-        //logger.info("Calculating Path");
+
     }
 
     @Override
@@ -43,6 +41,7 @@ public class PathfindToClosestPubTask extends LeafTask {
 
     @Override
     public void perform() {
+        logger.info("Pathfinding to mine");
         GameState.Position myPos = bb.getGameState().getMe().getPos();
         //Need to actually get vertex in graph rather than
         //make up a vertex.
@@ -53,31 +52,12 @@ public class PathfindToClosestPubTask extends LeafTask {
         AStar a = new AStar(bb.getGameState(), myVert, bb.getTarget());
         Path p = a.getPath();
         if(p == null){
-            //logger.info("There's no path!");
+            //logger.info("Pathfinding to mine failed");
             control.finishWithFailure();
             return;
         }
-        Map<GameState.Position, GameState.Hero>heroMap = bb.getGameState().getHeroesByPosition();
-        Map<GameState.Position, Pub>pubMap = bb.getGameState().getPubs();
-
-        for(Vertex v : p.getVertices()){
-            if(heroMap.get(v.getPosition()) != null){
-                logger.info("Hero on our path!");
-                Pub badPub = pubMap.get(bb.getTarget());
-                LinkedList<Pub> checkPub = bb.getCheckedPubList();
-                checkPub.add(badPub);
-                bb.setCheckedPubList(checkPub);
-                control.finishWithFailure();
-                return;
-            }
-        }
-
-
-
-
-
         bb.setPath(p);
-        //logger.info("Path found is " + p);
+        //logger.info("Pathfinding to mine succeeded");
         control.finishWithSuccess();
         return;
     }

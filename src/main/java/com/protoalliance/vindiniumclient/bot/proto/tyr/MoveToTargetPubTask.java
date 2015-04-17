@@ -4,12 +4,14 @@ import com.protoalliance.vindiniumclient.bot.BotMove;
 import com.protoalliance.vindiniumclient.bot.BotUtils;
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.Blackboard;
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.LeafTask;
+import com.protoalliance.vindiniumclient.bot.proto.Pub;
 import com.protoalliance.vindiniumclient.bot.proto.Vertex;
 import com.protoalliance.vindiniumclient.bot.proto.astar.Path;
 import com.protoalliance.vindiniumclient.dto.GameState;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +22,7 @@ public class MoveToTargetPubTask extends LeafTask {
     private BotMove retMove;
     private Path path;
     private int curPathIdx;
-    private static final Logger logger = LogManager.getLogger(com.protoalliance.vindiniumclient.bot.proto.kronos.MoveToTargetTask.class);
+    private static final Logger logger = LogManager.getLogger(MoveToTargetPubTask.class);
 
     public MoveToTargetPubTask(Blackboard bb) {
         super(bb);
@@ -36,7 +38,7 @@ public class MoveToTargetPubTask extends LeafTask {
 
     @Override
     public void start() {
-        logger.info("Setting next move.");
+        //logger.info("Setting next move.");
         this.path = bb.getPath();
         curPathIdx = 1;
     }
@@ -91,19 +93,32 @@ public class MoveToTargetPubTask extends LeafTask {
             //A check to make sure that there is no bot
             //near the pub we are seeking
             Map<GameState.Position, GameState.Hero> heroMap = bb.getGameState().getHeroesByPosition();
-            Vertex v = new Vertex(bb.getTarget().getPosition(), null);
-            List<Vertex> adjVert = v.getAdjacentVertices();
-            for(Vertex v2 : adjVert){
-                GameState.Hero checkHero = heroMap.get(v2.getPosition());
-                if(checkHero != null &&
-                        checkHero.getPos().getX() != bb.getGameState().getMe().getPos().getX() &&
-                        checkHero.getPos().getX() != bb.getGameState().getMe().getPos().getX()){
-                    logger.info("A hero moved next to the pub we targeted his name is " + checkHero.getName());
-                    control.finishWithFailure();
-                    return;
+            //Pub p = bb.getGameState().getPubs().get(bb.getTarget().getPosition());
+            //List<Vertex> adjVert = p.getAdjacentVertices();
+            LinkedList<Vertex> pathVert = path.getVertices();
+            for(int i = curPathIdx; i < pathVert.size(); i++) {
+                Vertex v = pathVert.get(i);
+                LinkedList<Vertex> adjVert = (LinkedList<Vertex>) v.getAdjacentVertices();
+                if(adjVert == null){
+                    continue;
+                }
+                for (Vertex v2 : adjVert) {
+                    GameState.Hero checkHero = heroMap.get(v2.getPosition());
+                    if (checkHero != null &&
+                            checkHero.getPos().getX() != bb.getGameState().getMe().getPos().getX() &&
+                            checkHero.getPos().getX() != bb.getGameState().getMe().getPos().getX()) {
+                        logger.info("A hero is adjacent to our path!" + checkHero.getName());
+                        Vertex tar = bb.getTarget();
+                        Map<GameState.Position, Pub> pubMap = bb.getGameState().getPubs();
+                        Pub badPub = pubMap.get(tar.getPosition());
+                        LinkedList<Pub> badPubList = bb.getCheckedPubList();
+                        badPubList.add(badPub);
+                        bb.setCheckedPubList(badPubList);
+                        control.finishWithFailure();
+                        return;
+                    }
                 }
             }
-
 
 
         }

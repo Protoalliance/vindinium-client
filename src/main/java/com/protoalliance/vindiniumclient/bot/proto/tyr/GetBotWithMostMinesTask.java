@@ -3,10 +3,13 @@ package com.protoalliance.vindiniumclient.bot.proto.tyr;
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.Blackboard;
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.LeafTask;
 import com.protoalliance.vindiniumclient.bot.proto.ProtoGameState;
+import com.protoalliance.vindiniumclient.bot.proto.Pub;
+import com.protoalliance.vindiniumclient.bot.proto.Vertex;
 import com.protoalliance.vindiniumclient.dto.GameState;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -14,6 +17,7 @@ import java.util.Map;
  * Created by Matthew on 3/29/2015.
  */
 public class GetBotWithMostMinesTask extends LeafTask {
+    private static final double MINE_THRESHOLD = 0.5;
     private static final Logger logger = LogManager.getLogger(GetBotWithMostMinesTask.class);
     private ProtoGameState state;
     private GameState.Hero targetHero;
@@ -63,11 +67,32 @@ public class GetBotWithMostMinesTask extends LeafTask {
         String myName = state.getMe().getName();
         String myId = state.getMe().getUserId();
         GameState.Position myPos = state.getMe().getPos();
+        GameState.Hero defaultTarget = null;
 
         Map<GameState.Position, GameState.Hero> heroPos = state.getHeroesByPosition();
         for(GameState.Position pos : heroPos.keySet()){
             GameState.Hero tar = heroPos.get(pos);
+            defaultTarget = tar;
             if(pos.getX() == myPos.getX() && pos.getY() == myPos.getY()){
+                continue;
+            }
+
+
+            boolean continueFlag = false;
+            Map<GameState.Position, Pub> pubMap = bb.getGameState().getPubs();
+            Vertex heroVert = bb.getGameState().getBoardGraph().get(tar.getPos());
+            List<Vertex> adjVert = heroVert.getAdjacentVertices();
+            for(GameState.Position pubPos : pubMap.keySet()){
+                for(Vertex v : adjVert){
+                    if(v.getPosition().getX() == pubPos.getX() && v.getPosition().getY() == pubPos.getX()){
+                        logger.info("hero is right next to a pub!");
+                        continueFlag = true;
+                        break;
+                    }
+                }
+                break;
+            }
+            if(continueFlag){
                 continue;
             }
 
@@ -77,10 +102,26 @@ public class GetBotWithMostMinesTask extends LeafTask {
                 finTar = tar;
                 maxMineCount = tar.getMineCount();
             }
+
         }
+        int numMines = bb.getGameState().getMines().size();
+        double ratio = ((double) finTar.getMineCount()) / ((double) numMines);
+        if(ratio < MINE_THRESHOLD){
+            logger.info("Mine ratio is " + ratio);
+            control.finishWithFailure();
+            return;
+        }
+
+        //If there's no good target we just set
+        //the last target from the loop to be our
+        //target
+        if(finTar == null){
+            control.finishWithFailure();
+            return;
+        }
+
         bb.setTargetHero(finTar);
         targetHero = finTar;
-        String tarName = finTar.getName();
         control.finishWithSuccess();
         return;
     }

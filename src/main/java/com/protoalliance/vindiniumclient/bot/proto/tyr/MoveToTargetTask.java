@@ -57,7 +57,7 @@ public class MoveToTargetTask extends LeafTask {
      */
     @Override
     public void perform() {
-
+        logger.info("Moving towards mine");
         if(curPathIdx > path.getVertices().size() - 1){
             control.finishWithFailure();
             return;

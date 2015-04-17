@@ -2,14 +2,21 @@ package com.protoalliance.vindiniumclient.bot.proto.kronos;
 
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.Blackboard;
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.ParentTask;
+import com.protoalliance.vindiniumclient.bot.proto.Pub;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.LinkedList;
 
 /**
  * Created by Matthew on 3/29/2015.
  */
 public class ChaseToDrinkSequence extends ParentTask {
 
+
     public ChaseToDrinkSequence(Blackboard bb) {
         super(bb);
+
         control.subTasks.add(new GetClosestPubIfNeededTask(bb));
         control.subTasks.add(new PathfindToClosestPubTask(bb));
         control.subTasks.add(new RunUntilFailureDecorator(bb, new MoveToTargetPubTask(bb)));

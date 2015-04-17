@@ -11,6 +11,7 @@ import com.protoalliance.vindiniumclient.dto.GameState;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +28,7 @@ public class GetPubTarget extends LeafTask {
     private static final Logger logger = LogManager.getLogger(GetPubTarget.class);
     //This sets the life amount we have when we start going
     //towards the pub.
-    private static final int BOOZE_THRESHOLD =  20;
+    private static final int BOOZE_THRESHOLD =  35;
     //This sets the amount of life we want to have when we
     //leave the pub
     private static final int SECONDARY_BOOZE_THRESHOLD = 80;
@@ -50,6 +51,8 @@ public class GetPubTarget extends LeafTask {
 
     @Override
     public void start() {
+
+
         //logger.info("Getting target.");
 
     }
@@ -75,6 +78,17 @@ public class GetPubTarget extends LeafTask {
      */
     @Override
     public void perform() {
+        if(bb.checkedPubList.size() >= 4){
+            //This means that we have essentially run out of options for a safe pub
+            logger.info("We have run out of pubs!");
+            logger.info("reset checked pub list");
+            bb.setCheckedPubList(new LinkedList<Pub>());
+            bb.move = BotMove.STAY;
+            control.finishWithSuccess();
+            return;
+        }
+
+
         //logger.info("We need booze and we will get it!");
         Vertex target = null;
         int minDist = Integer.MAX_VALUE;
@@ -86,9 +100,24 @@ public class GetPubTarget extends LeafTask {
         Vertex myVert = new Vertex(myPos, null);
         Manhattan man = new Manhattan(null);
         Map<GameState.Position, Pub> pubMap = bb.getGameState().getPubs();
+
+
         for(GameState.Position pos : pubMap.keySet()){
             Pub p = pubMap.get(pos);
-            if(p.getPosition().getX() == myPos.getX() && p.getPosition().getY() == myPos.getY()){
+            boolean continueFlag = false;
+            if(bb.getCheckedPubList() != null){
+
+                for(Pub checkedPub : bb.getCheckedPubList()){
+                    if(checkedPub.getPosition().getX() == p.getPosition().getX() &&
+                            checkedPub.getPosition().getY() == p.getPosition().getY()){
+                        continueFlag = true;
+                    }
+                }
+                if(continueFlag){
+                    continue;
+                }
+            }
+            if(p.getPosition().getX() == myPos.getX() && p.getPosition().getY() == myPos.getY() || bb.checkedPubList.size() >= 4){
                 //This really shouldn't happen.
                 //logger.info("We are already at the pub!");
                 bb.move = BotMove.STAY;

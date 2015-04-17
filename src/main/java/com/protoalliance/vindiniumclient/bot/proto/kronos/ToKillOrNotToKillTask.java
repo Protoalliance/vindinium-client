@@ -75,12 +75,31 @@ public class ToKillOrNotToKillTask extends LeafTask {
                 continue;
             }
 
+            boolean continueFlag = false;
+            Map<GameState.Position, Pub> pubMap = bb.getGameState().getPubs();
+            Vertex heroVert = bb.getGameState().getBoardGraph().get(finTar.getPos());
+            List<Vertex> adjVert = heroVert.getAdjacentVertices();
+            for(GameState.Position pubPos : pubMap.keySet()){
+                for(Vertex v : adjVert){
+                    if(v.getPosition().getX() == pubPos.getX() && v.getPosition().getY() == pubPos.getX()){
+                        logger.info("hero is right next to a pub!");
+                        continueFlag = true;
+                        break;
+                    }
+                }
+                break;
+            }
+            if(continueFlag){
+                continue;
+            }
+
             int mineCount = tar.getMineCount();
 
             if(mineCount >= maxMineCount){
                 finTar = tar;
                 maxMineCount = tar.getMineCount();
             }
+
         }
         int numMines = bb.getGameState().getMines().size();
         double ratio = ((double) finTar.getMineCount()) / ((double) numMines);
@@ -89,18 +108,7 @@ public class ToKillOrNotToKillTask extends LeafTask {
             control.finishWithFailure();
             return;
         }
-        Map<GameState.Position, Pub> pubMap = bb.getGameState().getPubs();
-        Vertex heroVert = bb.getGameState().getBoardGraph().get(finTar.getPos());
-        List<Vertex> adjVert = heroVert.getAdjacentVertices();
-        for(GameState.Position pubPos : pubMap.keySet()){
-            for(Vertex v : adjVert){
-                if(v.getPosition().getX() == pubPos.getX() && v.getPosition().getY() == pubPos.getX()){
-                    logger.info("hero is right next to a pub!");
-                    control.finishWithFailure();
-                    return;
-                }
-            }
-        }
+
 
         bb.setTargetHero(finTar);
         targetHero = finTar;

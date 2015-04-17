@@ -12,12 +12,12 @@ import org.apache.logging.log4j.Logger;
  */
 public class Tyr implements ProtoBot{
     private Blackboard bb;
-    private DrinkOrKillSelector seq;
+    private MasterLogicSelector seq;
     private static final Logger logger = LogManager.getLogger(Tyr.class);
 
     public Tyr(){
         bb = new Blackboard();
-        seq = new DrinkOrKillSelector(bb);
+        seq = new MasterLogicSelector(bb);
     }
 
     @Override
@@ -25,7 +25,7 @@ public class Tyr implements ProtoBot{
 
         if (seq.getController().finished() || !seq.getController().started()) {
             bb.setGameState(state);
-            seq = new DrinkOrKillSelector(bb);
+            seq = new MasterLogicSelector(bb);
             seq.getController().safeStart();
             bb.move = null;
         } else {
@@ -46,7 +46,7 @@ public class Tyr implements ProtoBot{
                 seq.perform();
             }
             if(seq.getController().succeeded()){
-                seq = new DrinkOrKillSelector(bb);
+                seq = new MasterLogicSelector(bb);
                 seq.getController().safeStart();
             }
             if(seq.getController().failed()){

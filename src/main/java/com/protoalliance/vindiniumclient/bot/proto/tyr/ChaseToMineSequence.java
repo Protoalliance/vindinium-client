@@ -2,33 +2,21 @@ package com.protoalliance.vindiniumclient.bot.proto.tyr;
 
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.Blackboard;
 import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.ParentTask;
-import com.protoalliance.vindiniumclient.bot.proto.Pub;
-import com.protoalliance.vindiniumclient.bot.proto.bloodandgolddrunkbot.GetClosestPubIfNeededTask;
-import com.protoalliance.vindiniumclient.bot.proto.bloodandgolddrunkbot.PathfindToClosestPubTask;
-import com.protoalliance.vindiniumclient.bot.proto.bloodandgolddrunkbot.RunUntilFailureDecorator;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.util.LinkedList;
-
 
 /**
- * Created by Matthew on 3/29/2015.
+ * Created by Joseph on 3/30/2015.
  */
-public class ChaseToDrinkSequence extends ParentTask {
-    private static final Logger logger = LogManager.getLogger(ChaseToDrinkSequence.class);
-
-    public ChaseToDrinkSequence(Blackboard bb) {
+public class ChaseToMineSequence extends ParentTask{
+    public ChaseToMineSequence(Blackboard bb) {
         super(bb);
-
-        control.subTasks.add(new GetPubTarget(bb));
-        control.subTasks.add(new PathfindToClosestPubTask(bb));
-        control.subTasks.add(new RunUntilFailureDecorator(bb, new MoveToTargetPubTask(bb)));
-
+        control.subTasks.add(new GetClosestMineTask(bb));
+        control.subTasks.add(new PathfindToClosestMineTask(bb));
+        control.subTasks.add(new RunUntilFailureDecorator(bb, new MoveToTargetTask(bb)));
     }
 
     @Override
-    public void childFailed() {
+    public void childFailed()
+    {
         control.finishWithFailure();
     }
     /**

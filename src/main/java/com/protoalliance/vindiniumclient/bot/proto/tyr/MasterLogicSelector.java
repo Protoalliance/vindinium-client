@@ -27,11 +27,13 @@ import com.protoalliance.vindiniumclient.bot.proto.BehaviorTreeBase.Task;
  * Adapted from http://magicscrollsofcode.blogspot.com/2010/12/behavior-trees-by-example-ai-in-android.html
  *
  */
-public class DrinkOrKillSelector extends ParentTask{
-    public DrinkOrKillSelector(Blackboard bb) {
+public class MasterLogicSelector extends ParentTask{
+    public MasterLogicSelector(Blackboard bb) {
         super(bb);
         control.subTasks.add(new AmILowOnHealthSequence(bb));
         control.subTasks.add(new ChaseToKillForGoldSequence(bb));
+        control.subTasks.add(new ChaseToMineSequence(bb));
+        control.subTasks.add(new RandomMovementTask(bb));
     }
 
     /**
