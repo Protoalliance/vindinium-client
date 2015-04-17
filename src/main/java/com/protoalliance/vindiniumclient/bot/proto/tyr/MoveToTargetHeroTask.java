@@ -96,7 +96,7 @@ public class MoveToTargetHeroTask extends LeafTask {
             for(Vertex v : adjVert){
                 heroPos.get(v.getPosition());
                 if(heroPos.get(v.getPosition()) != null){
-                    logger.info("hero is right next to a pub!");
+                    //logger.info("hero is right next to a pub!");
                     control.finishWithFailure();
                     break;
                 }

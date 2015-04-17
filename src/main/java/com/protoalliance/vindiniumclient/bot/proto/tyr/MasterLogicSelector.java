@@ -38,8 +38,8 @@ public class MasterLogicSelector extends ParentTask{
 
     /**
      * In case of child finishing with
-     * sucess, our job here is done, finish
-     * with sucess
+     * success, our job here is done, finish
+     * with success
      * as well
      */
     @Override

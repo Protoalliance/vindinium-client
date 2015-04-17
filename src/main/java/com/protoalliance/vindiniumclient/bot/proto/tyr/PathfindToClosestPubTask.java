@@ -62,7 +62,7 @@ public class PathfindToClosestPubTask extends LeafTask {
 
         for(Vertex v : p.getVertices()){
             if(heroMap.get(v.getPosition()) != null){
-                logger.info("Hero on our path!");
+                //logger.info("Hero on our path!");
                 Pub badPub = pubMap.get(bb.getTarget());
                 LinkedList<Pub> checkPub = bb.getCheckedPubList();
                 checkPub.add(badPub);

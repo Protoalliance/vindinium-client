@@ -34,7 +34,7 @@ public class RandomMovementTask extends LeafTask {
     @Override
     public void perform() {
 
-        logger.info("Deciding which direction to go.");
+       // logger.info("Deciding which direction to go.");
         int randomNumber = (int)(Math.random() * 4);
 
         switch(randomNumber) {
@@ -55,7 +55,7 @@ public class RandomMovementTask extends LeafTask {
                 bb.move = BotMove.WEST;
                 break;
             default:
-                logger.info("Going nowhere!");
+               // logger.info("Going nowhere!");
                 bb.move = BotMove.STAY;
                 break;
         }

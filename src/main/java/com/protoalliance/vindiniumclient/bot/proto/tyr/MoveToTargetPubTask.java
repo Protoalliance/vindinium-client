@@ -45,7 +45,7 @@ public class MoveToTargetPubTask extends LeafTask {
 
     @Override
     public void end() {
-        logger.info("Moving " + retMove);
+       // logger.info("Moving " + retMove);
     }
 
     /**
@@ -107,7 +107,7 @@ public class MoveToTargetPubTask extends LeafTask {
                     if (checkHero != null &&
                             checkHero.getPos().getX() != bb.getGameState().getMe().getPos().getX() &&
                             checkHero.getPos().getX() != bb.getGameState().getMe().getPos().getX()) {
-                        logger.info("A hero is adjacent to our path!" + checkHero.getName());
+                        //logger.info("A hero is adjacent to our path!" + checkHero.getName());
                         Vertex tar = bb.getTarget();
                         Map<GameState.Position, Pub> pubMap = bb.getGameState().getPubs();
                         Pub badPub = pubMap.get(tar.getPosition());

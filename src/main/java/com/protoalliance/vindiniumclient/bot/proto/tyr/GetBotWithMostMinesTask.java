@@ -86,7 +86,7 @@ public class GetBotWithMostMinesTask extends LeafTask {
                 for(Vertex v : adjVert){
                     heroPos.get(v.getPosition());
                     if(heroPos.get(v.getPosition()) != null){
-                        logger.info("hero is right next to a pub!");
+                        //logger.info("hero is right next to a pub!");
                         continueFlag = true;
                         break;
                     }
@@ -117,7 +117,7 @@ public class GetBotWithMostMinesTask extends LeafTask {
         int numMines = bb.getGameState().getMines().size();
         double ratio = ((double) finTar.getMineCount()) / ((double) numMines);
         if(ratio < MINE_THRESHOLD){
-            logger.info("Mine ratio is " + ratio);
+           // logger.info("Mine ratio is " + ratio);
             control.finishWithFailure();
             return;
         }

@@ -138,7 +138,7 @@ public class GetClosestPubIfNeededTask extends LeafTask {
                 if(checkHero != null &&
                         checkHero.getPos().getX() != bb.getGameState().getMe().getPos().getX() &&
                         checkHero.getPos().getX() != bb.getGameState().getMe().getPos().getX()){
-                    logger.info("There is a hero next to this pub his name is " + checkHero.getName());
+                    //logger.info("There is a hero next to this pub his name is " + checkHero.getName());
                     breakFlag = true;
                     break;
                 }

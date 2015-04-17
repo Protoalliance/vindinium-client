@@ -56,7 +56,7 @@ public class GetClosestMineTask extends LeafTask{
         int minDist = Integer.MAX_VALUE;
         Vertex cur;
         if (bb.getGameState() == null) {
-            logger.error("State is null");
+            //logger.error("State is null");
         }
         GameState.Position myPos = bb.getGameState().getMe().getPos();
         Vertex myVert = new Vertex(myPos, null);

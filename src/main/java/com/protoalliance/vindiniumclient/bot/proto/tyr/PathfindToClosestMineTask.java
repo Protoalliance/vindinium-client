@@ -41,7 +41,7 @@ public class PathfindToClosestMineTask extends LeafTask{
 
     @Override
     public void perform() {
-        logger.info("Pathfinding to mine");
+        //logger.info("Pathfinding to mine");
         GameState.Position myPos = bb.getGameState().getMe().getPos();
         //Need to actually get vertex in graph rather than
         //make up a vertex.

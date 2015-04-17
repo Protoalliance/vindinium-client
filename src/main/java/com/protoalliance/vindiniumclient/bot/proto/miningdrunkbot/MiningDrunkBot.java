@@ -56,7 +56,7 @@ public class MiningDrunkBot implements ProtoBot{
             }
         }
 
-        logger.info("We returned a move of " + bb.move);
+        //logger.info("We returned a move of " + bb.move);
         return bb.move;
     }
 

@@ -80,8 +80,8 @@ public class GetPubTarget extends LeafTask {
     public void perform() {
         if(bb.checkedPubList.size() >= 4){
             //This means that we have essentially run out of options for a safe pub
-            logger.info("We have run out of pubs!");
-            logger.info("reset checked pub list");
+            //logger.info("We have run out of pubs!");
+            //logger.info("reset checked pub list");
             bb.setCheckedPubList(new LinkedList<Pub>());
             bb.move = BotMove.STAY;
             control.finishWithSuccess();
@@ -143,7 +143,7 @@ public class GetPubTarget extends LeafTask {
                 if(checkHero != null &&
                         checkHero.getPos().getX() != bb.getGameState().getMe().getPos().getX() &&
                         checkHero.getPos().getX() != bb.getGameState().getMe().getPos().getX()){
-                    logger.info("There is a hero next to this pub his name is " + checkHero.getName());
+                    //logger.info("There is a hero next to this pub his name is " + checkHero.getName());
                     breakFlag = true;
                     break;
                 }

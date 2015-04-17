@@ -57,7 +57,7 @@ public class GetClosestPubIfNeededTask extends LeafTask {
     @Override
     public void end() {
         if(target != null) {
-            logger.info("Target pub at (" + target.getPosition().getX() + "," + target.getPosition().getY() + ")");
+           // logger.info("Target pub at (" + target.getPosition().getX() + "," + target.getPosition().getY() + ")");
         }
     }
 
@@ -96,12 +96,12 @@ public class GetClosestPubIfNeededTask extends LeafTask {
                 control.finishWithSuccess();
                 return;
             }
-            logger.info("We don't need booze yet!");
+           // logger.info("We don't need booze yet!");
             control.finishWithFailure();
             return;
         }
 
-        logger.info("We need booze and we will get it!");
+       // logger.info("We need booze and we will get it!");
         Vertex target = null;
         int minDist = Integer.MAX_VALUE;
         Vertex cur = null;
@@ -137,7 +137,7 @@ public class GetClosestPubIfNeededTask extends LeafTask {
                 if(checkHero != null &&
                         checkHero.getPos().getX() != bb.getGameState().getMe().getPos().getX() &&
                         checkHero.getPos().getX() != bb.getGameState().getMe().getPos().getX()){
-                    logger.info("There is a hero next to this pub his name is " + checkHero.getName());
+                    //logger.info("There is a hero next to this pub his name is " + checkHero.getName());
                     breakFlag = true;
                     break;
                 }

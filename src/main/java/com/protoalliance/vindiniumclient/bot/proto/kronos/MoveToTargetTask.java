@@ -32,14 +32,14 @@ public class MoveToTargetTask extends LeafTask {
 
     @Override
     public void start() {
-        logger.info("Setting next move.");
+        //logger.info("Setting next move.");
         this.path = bb.getPath();
         curPathIdx = 1;
     }
 
     @Override
     public void end() {
-        logger.info("Moving " + retMove);
+        //logger.info("Moving " + retMove);
     }
 
     /**

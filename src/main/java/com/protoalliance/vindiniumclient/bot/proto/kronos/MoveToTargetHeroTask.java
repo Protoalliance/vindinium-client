@@ -88,7 +88,7 @@ public class MoveToTargetHeroTask extends LeafTask {
         for(GameState.Position pubPos : pubMap.keySet()){
             for(Vertex v : adjVert){
                 if(v.getPosition().getX() == pubPos.getX() && v.getPosition().getY() == pubPos.getX()){
-                    logger.info("hero is right next to a pub!");
+                    //logger.info("hero is right next to a pub!");
                     control.finishWithFailure();
                     return;
                 }
